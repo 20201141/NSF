@@ -1,0 +1,30 @@
+.ViewPost-wrapper {
+  background-color: #4773E2;
+}
+.ViewPost-builder {
+  display: block;
+  margin: 1em auto;
+  border: 1px solid black;
+  border-radius: 1em;
+}
+.ViewPost-separator {
+  margin: 1.5em;
+  visibility: hidden;
+}
+.ViewPost-comment-input {
+  display: block;
+  width: auto;
+  margin-bottom: .3em;
+  resize: none;
+  background-color: lightgray;
+}
+.ViewPost-comment-submit {
+  background-color: #ccccff;
+  /* padding: 0.2em; */
+  font-size-adjust: 110%;
+  border: 0px;
+  border-radius: .3em;
+}
+.ViewPost-comment-form {
+  margin: 1em;
+}
