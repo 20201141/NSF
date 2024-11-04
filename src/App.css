@@ -1,38 +1,67 @@
-.App {
-  text-align: center;
+/* Overall container styling */
+.app-container {
+  display: grid;
+  grid-template-areas: 
+    "top-nav top-nav"
+    "sidebar content";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Top Navigation Bar */
+.top-nav {
+  grid-area: top-nav;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #B0C4DE;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.home-icon {
+  margin-right: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.search-bar {
+  flex-grow: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.filter-button img {
+  height: 24px;
+  width: 24px;
+}
+
+/* Sidebar */
+.sidebar {
+  grid-area: sidebar;
+  background-color: #B0C4DE;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.menu-item {
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.menu-item:hover {
+  background-color: #ADD8E6;
+}
+
+/* Main Content Area */
+.content {
+  grid-area: content;
+  padding: 20px;
+  background-color: #F0F0F0;
 }
