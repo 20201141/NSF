@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import logo from './images/logo.png';
+import filter from './images/filter-32.svg';
 import './App.css';
 
 const App: React.FC = () => {
@@ -9,11 +11,11 @@ const App: React.FC = () => {
         {/* Top Navigation Bar */}
         <div className="top-nav">
           <Link to="/" className="home-icon">
-            <img src="icon.png" alt="Home" />
+            <img src={logo} className="App-logo" alt="Home" />
           </Link>
           <input type="text" placeholder="Search Post" className="search-bar" />
           <button className="filter-button">
-            <img src="filter-icon.png" alt="Filter" />
+            <img src={filter} className="Filter-logo" alt="Filter" />
           </button>
         </div>
 

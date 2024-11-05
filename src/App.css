@@ -7,6 +7,7 @@
   grid-template-columns: 200px 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+  background-color: #F0F0F0;
 }
 
 /* Top Navigation Bar */
@@ -15,7 +16,7 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #B0C4DE;
+  background-color: #A1C4FB;
 }
 
 .home-icon {
@@ -23,32 +24,40 @@
 }
 
 .search-bar {
-  flex-grow: 1;
+  width: 450px;
   padding: 8px;
+  margin-left: 300px;
   margin-right: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
 
-.filter-button img {
-  height: 24px;
-  width: 24px;
+.filter-button {
+  height: 33px;
+  width: 40px;
 }
 
 /* Sidebar */
 .sidebar {
   grid-area: sidebar;
-  background-color: #B0C4DE;
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  position: absolute; /* Allows you to control positioning with top and left */
+  top: 100px; /* Distance from the top bar */
+  left: 20px; /* Distance from the left side of the website */
+  width: 150px; /* Set your desired width */
+  height: 350px; /* Set your desired height */
+  background-color: #A1C4FB; /* Sidebar color */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for a floating effect */
   gap: 20px;
 }
 
 .menu-item {
   color: black;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   padding: 8px;
   border-radius: 8px;
@@ -64,4 +73,11 @@
   grid-area: content;
   padding: 20px;
   background-color: #F0F0F0;
+  margin-left: 25px;
+}
+
+.App-logo {
+  width: 50px;
+  margin-left: 50px;
+  height: auto;
 }
