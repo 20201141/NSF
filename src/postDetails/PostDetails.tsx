@@ -1,7 +1,7 @@
-// components/PostDetails.tsx
 import React from "react";
 import { Post } from "../classes/Post";
 import { useParams } from "react-router-dom";
+import "./PostDetails.css"; // Import the CSS file
 
 const PostDetails: React.FC<{ posts: Post[] }> = ({ posts }) => {
   const { postId } = useParams<{ postId: string }>();
@@ -15,13 +15,13 @@ const PostDetails: React.FC<{ posts: Post[] }> = ({ posts }) => {
   }
 
   return (
-    <div className="post-details" style={{ backgroundColor: '#4f87ff', borderRadius: '10px', padding: '16px', color: 'white', width: '750px' }}>
+    <div className="post-details">
       <p>{post.username} • {post.date}</p>
       <p>{post.category}</p>
       <h1>{post.title}</h1>
-      <div className="tags" style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+      <div className="tags">
         {post.tags.map((tag, idx) => (
-          <span key={idx} className="tag" style={{ backgroundColor: '#EFEFEF', color: '#000', padding: '4px 8px', borderRadius: '8px' }}>{tag}</span>
+          <span key={idx} className="tag">{tag}</span>
         ))}
       </div>
       <p>{post.content}</p>
