@@ -6,6 +6,8 @@ import logo from './images/logo.png';
 import filter from './images/filter-32.svg';
 
 import Forum from "./forum/Forum";
+import PostDetails from "./postDetails/PostDetails"
+
 import { Post } from "./classes/Post";
 
 
@@ -18,6 +20,7 @@ const App: React.FC = () => {
       category: "Question",
       title: "What is the difference between C and C++?",
       tags: ["C", "C++"],
+      content: "I just started learning C and C++. It would help if someone could summarize or explain what is the difference in the usage of C vs C++? Can C and C++ programs be interchanged, or are they separate languages? If I learn C++ would I know C?",
     },
     {
       username: "pythonlover",
@@ -25,6 +28,7 @@ const App: React.FC = () => {
       category: "Discussion",
       title: "Python is the best language",
       tags: ["Python"],
+      content: "I think Python is the best language without a single doubt in my mind. However, I don't want to be a close-minded individual, can someone change my mind on why it wouldn't be the case.",
     },
     {
       username: "idkwat",
@@ -32,6 +36,7 @@ const App: React.FC = () => {
       category: "Question",
       title: "Why is my Java code not working?!?!",
       tags: ["Java"],
+      content: "Can someone please explain why my Java code won't run? I can't find the error online and my friends don't seem to understand it either.",
     },
     {
       username: "perrogrande",
@@ -39,6 +44,7 @@ const App: React.FC = () => {
       category: "Question",
       title: "What languages do companies usually look for?",
       tags: ["C++", "Java", "Python", "Go"],
+      content: "What title says, what languages should I learn for companies to actualy looks at my application?",
     },
     {
       username: "firstuser",
@@ -46,6 +52,7 @@ const App: React.FC = () => {
       category: "Discussion",
       title: "The CS market is slowly getting better",
       tags: [""],
+      content: "I think most CS majors are overreacting, I think the market is getting better. I think CS majors are just stuck in the past where you only needed to know simple leetcode to get a job. I think many CS majors are taking their major for granted and not putting in the work to actually be better than CS majors in the past, which is why they find it so hard to find internships/jobs.",
     },
   ];
   
@@ -81,6 +88,7 @@ const App: React.FC = () => {
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
+            <Route path="/post/:postId" element={<PostDetails posts={posts} />} />
           </Routes>
         </div>
       </div>

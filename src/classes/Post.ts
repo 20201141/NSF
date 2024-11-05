@@ -4,4 +4,5 @@ export type Post = {
     category: string;
     title: string;
     tags: string[];
+    content: string;
 };

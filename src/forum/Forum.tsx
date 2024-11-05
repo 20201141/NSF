@@ -1,6 +1,7 @@
 // components/Forum.tsx
 import React from "react";
 import { Post } from "../classes/Post";
+import { Link } from "react-router-dom";
 import "./Forum.css";
 
 type ForumProps = {
@@ -16,9 +17,9 @@ const Forum: React.FC<ForumProps> = ({ posts }) => {
             <span>{post.username} • {post.date}</span>
             <span className="post-category">{post.category}</span>
           </div>
-          <a href="Hello" className="post-title">
+          <Link to={`/post/${index}`} className="post-title"> {/* Updated Link */}
             {post.title}
-          </a>
+          </Link>
           <div className="post-tags">
             {post.tags.map((tag, tagIndex) => (
               <span key={tagIndex} className="tag">
@@ -29,7 +30,10 @@ const Forum: React.FC<ForumProps> = ({ posts }) => {
         </div>
       ))}
 
-      <button className="floating-button" onClick={() => "Here"}>
+      <button className="floating-button" onClick={
+        () => 
+          "Here"
+        }>
       +
       </button> 
     </div>
