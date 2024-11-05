@@ -6,8 +6,9 @@
     "sidebar content";
   grid-template-columns: 200px 1fr;
   grid-template-rows: auto 1fr;
-  height: 100vh;
   background-color: #F0F0F0;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 /* Top Navigation Bar */
@@ -45,7 +46,7 @@
   position: absolute; /* Allows you to control positioning with top and left */
   top: 100px; /* Distance from the top bar */
   left: 20px; /* Distance from the left side of the website */
-  width: 150px; /* Set your desired width */
+  width: 175px; /* Set your desired width */
   height: 350px; /* Set your desired height */
   background-color: #A1C4FB; /* Sidebar color */
   border-radius: 8px; /* Rounded corners */
