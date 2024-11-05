@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -55,6 +55,46 @@ const App: React.FC = () => {
       content: "I think most CS majors are overreacting, I think the market is getting better. I think CS majors are just stuck in the past where you only needed to know simple leetcode to get a job. I think many CS majors are taking their major for granted and not putting in the work to actually be better than CS majors in the past, which is why they find it so hard to find internships/jobs.",
     },
   ];
+
+  function searchPosts(posts: Post[], searchTerm: string): Post[] {
+    const keywords = searchTerm.toLowerCase().split(" ");
+    
+    return posts.filter(post => {
+      const titleMatches = post.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const tagsMatch = post.tags.some(tag => keywords.includes(tag.toLowerCase()));
+      return titleMatches || tagsMatch;
+    });
+  }
+
+  let [posts_, setPosts_] = useState(posts);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const PostSearch: React.FC = () => {
+    const [filteredPosts, setFilteredPosts] = useState(posts);
+  
+    useEffect(() => {
+      setFilteredPosts(searchPosts(posts, searchTerm));
+    }, [searchTerm]);
+  
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+      if(filteredPosts.length >= 1)  setPosts_(filteredPosts)
+    };
+
+    return (
+      <div className="search">
+        <input 
+          type="text" 
+          placeholder="Search posts..." 
+          value={searchTerm} 
+          onChange={handleInputChange} 
+          className="search-bar" 
+          autoFocus
+        />
+      </div>
+    );
+  };
+  
   
   return (
     <Router>
@@ -64,7 +104,7 @@ const App: React.FC = () => {
           <Link to="/" className="home-icon">
             <img src={logo} className="App-logo" alt="Home" />
           </Link>
-          <input type="text" placeholder="Search Post" className="search-bar" />
+          <PostSearch />
           <button className="filter-button">
             <img src={filter} className="Filter-logo" alt="Filter" />
           </button>
@@ -83,7 +123,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={
               <div>
-                <Forum posts={posts} />
+                <Forum posts={posts_} />
               </div>} />
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
