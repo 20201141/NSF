@@ -86,12 +86,12 @@ const App: React.FC = () => {
 
             <Route path="/" element={
               <div>
-                <Forum posts={posts_} />
+                <Forum posts={filteredPosts} />
               </div>} />
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
-            <Route path="/post/:postId" element={<PostDetails posts={posts_} loading={loading} />} />
+            <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
 
           </Routes>
         </div>

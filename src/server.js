@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 // API Route to get all posts
-app.get('/api/posts', async (req, res) => {
+app.get('/posts', async (req, res) => {
   try {
     // Query to retrieve posts from the "post" table
     const result = await pool.query(`
