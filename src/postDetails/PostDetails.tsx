@@ -1,14 +1,43 @@
-import React from "react";
-import { Post } from "../classes/Post";
-import { useParams } from "react-router-dom";
-import "./PostDetails.css"; // Import the CSS file
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import './PostDetails.css';
 
-const PostDetails: React.FC<{ posts: Post[] }> = ({ posts }) => {
+type Post = {
+  post_id: number;
+  username: string;
+  date: string;
+  post_type: string;
+  title: string;
+  content: string;
+  isresolved: boolean;
+  code?: string;
+  getnotif?: boolean;
+};
+
+type PostDetailsProps = {
+  posts: Post[];
+  loading: boolean;
+};
+
+const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
-  
-  // Parse postId to a number
-  const postIndex = parseInt(postId || "0", 10);
-  const post = posts[postIndex]; // Get the post using the index
+
+  console.log("Loading:", loading);
+  console.log("Posts:", posts);
+  console.log("postId from URL:", postId);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Ensure posts is an array before trying to use .find()
+  if (!Array.isArray(posts)) {
+    console.error("posts is not an array:", posts);
+    return <div>Data format error: posts is not an array.</div>;
+  }
+
+  const post = posts.find((p) => p.post_id === parseInt(postId || "0", 10));
+  console.log("Matched Post:", post);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -16,15 +45,18 @@ const PostDetails: React.FC<{ posts: Post[] }> = ({ posts }) => {
 
   return (
     <div className="post-details">
-      <p>{post.username} • {post.date}</p>
-      <p>{post.category}</p>
+      <p>{post.username} • {new Date(post.date).toLocaleString()}</p>
+      <p>Category: {post.post_type}</p>
       <h1>{post.title}</h1>
-      <div className="tags">
-        {post.tags.map((tag, idx) => (
-          <span key={idx} className="tag">{tag}</span>
-        ))}
-      </div>
       <p>{post.content}</p>
+      {post.isresolved && <p>Status: Resolved</p>}
+      {post.code && (
+        <div>
+          <h3>Code:</h3>
+          <pre>{post.code}</pre>
+        </div>
+      )}
+      {post.getnotif && <p>Notifications: Enabled</p>}
     </div>
   );
 };

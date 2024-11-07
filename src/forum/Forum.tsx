@@ -1,8 +1,16 @@
-// components/Forum.tsx
-import React from "react";
-import { Post } from "../classes/Post";
-import { Link } from "react-router-dom";
-import "./Forum.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Forum.css';
+
+type Post = {
+  post_id: number;
+  username: string;
+  date: string;
+  post_type: string;
+  title: string;
+  content: string;
+  isresolved: boolean;
+};
 
 type ForumProps = {
   posts: Post[];
@@ -11,31 +19,19 @@ type ForumProps = {
 const Forum: React.FC<ForumProps> = ({ posts }) => {
   return (
     <div className="forum">
-      {posts.map((post, index) => (
-        <div key={index} className="post-card">
+      {posts.map((post) => (
+        <div key={post.post_id} className="post-card">
           <div className="post-header">
-            <span>{post.username} • {post.date}</span>
-            <span className="post-category">{post.category}</span>
+            <span>{post.username} • {new Date(post.date).toLocaleString()}</span>
+            <span className="post-category">{post.post_type}</span>
           </div>
-          <Link to={`/post/${index}`} className="post-title"> {/* Updated Link */}
+          <Link to={`/post/${post.post_id}`} className="post-title">
             {post.title}
           </Link>
-          <div className="post-tags">
-            {post.tags.map((tag, tagIndex) => (
-              <span key={tagIndex} className="tag">
-                {tag}
-              </span>
-            ))}
-          </div>
+          <p>{post.content}</p>
+          {post.isresolved && <p>Status: Resolved</p>}
         </div>
       ))}
-
-      <button className="floating-button" onClick={
-        () => 
-          "Here"
-        }>
-      +
-      </button> 
     </div>
   );
 };

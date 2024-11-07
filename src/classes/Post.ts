@@ -1,8 +1,11 @@
 export type Post = {
-    username: string;
-    date: string;
-    category: string;
-    title: string;
-    tags: string[];
-    content: string;
+  post_id: number;
+  username: string;
+  title: string;
+  date: string;
+  post_type: string;
+  content: string;
+  isresolved: boolean;
+  code: string;
+  getnotif: boolean;
 };
