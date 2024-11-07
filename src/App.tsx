@@ -128,7 +128,7 @@ const App: React.FC = () => {
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
-            <Route path="/post/:postId" element={<PostDetails posts={posts} />} />
+            <Route path="/post/:postId" element={<PostDetails posts={posts_} />} />
           </Routes>
         </div>
       </div>
