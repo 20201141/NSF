@@ -35,7 +35,7 @@ const MyPosts = () => {
   // display posts
   return (
     <div>
-
+      Posts
     </div>
   );
 };
@@ -48,7 +48,7 @@ const Personalize = () => {
   // display isDark
   return (
     <div>
-
+      Personalize
     </div>
   );
 };
@@ -70,7 +70,7 @@ const UserSettings: React.FC = () => {
         <Routes>
           <Route path="/" element={<Settings />} />
           <Route path="/my-post" element={<MyPosts />} />
-          <Route path="/personalize" element={<MyPosts />} />
+          <Route path="/personalize" element={<Personalize />} />
         </Routes>
       </div>
     </Router>
