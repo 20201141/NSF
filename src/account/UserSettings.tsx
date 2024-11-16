@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import type { UserAccount } from '../classes/UserAccount'; 
-import type { Post } from '../classes/Post';
+//import type { UserAccount } from '../classes/UserAccount'; 
+//import type { Post } from '../classes/Post';
 import Button from "./Button";
 import './UserSettings.css';
 
