@@ -6,7 +6,7 @@ import Button from "./Button";
 import './UserSettings.css';
 
 // User Settings Component
-const Settings = () => {
+function Settings() {
   // get user's info from DB
 
   
@@ -25,10 +25,10 @@ const Settings = () => {
       <Button onClick={handleClick}>Change Password</Button>
     </div>
   );
-};
+}
 
 // My Posts Component
-const MyPosts = () => {
+function MyPosts() {
   // get user's posts from DB
 
 
@@ -38,10 +38,10 @@ const MyPosts = () => {
       Posts
     </div>
   );
-};
+}
 
 // Personalize Component
-const Personalize = () => {
+function Personalize() {
   // get user's choice for theme mode from DB
 
 
@@ -51,7 +51,7 @@ const Personalize = () => {
       Personalize
     </div>
   );
-};
+}
 
 function UserSettings() {
   return (
