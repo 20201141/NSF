@@ -12,8 +12,8 @@ function UserSettings() {
         <nav>
           <ul>
             <li><Link to="/account" className="user-nav-item">User Settings</Link></li>
-            <li><Link to="#/my-post" className="user-nav-item">My Posts</Link></li>
-            <li><Link to="#/personalize" className="user-nav-item">Personalize</Link></li>
+            <li><Link to="/#/my-post" className="user-nav-item">My Posts</Link></li>
+            <li><Link to="/#/personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
         </nav>
       </div>
@@ -30,7 +30,7 @@ function UserSettings() {
 }
 
 // User Settings Component
-function Settings() {
+const Settings = () => {
   // get user's info from DB
 
   
@@ -52,7 +52,7 @@ function Settings() {
 }
 
 // My Posts Component
-function MyPosts() {
+const MyPosts = () => {
   // get user's posts from DB
 
 
@@ -65,7 +65,7 @@ function MyPosts() {
 }
 
 // Personalize Component
-function Personalize() {
+const Personalize = () => {
   // get user's choice for theme mode from DB
 
 
