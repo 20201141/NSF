@@ -53,7 +53,7 @@ const Personalize = () => {
   );
 };
 
-function UserSettings {
+function UserSettings() {
   return (
     <div className="user-set">
       <div className="user-nav">
@@ -75,6 +75,6 @@ function UserSettings {
       </div>
     </div>
   );
-};
+}
 
 export default UserSettings;
