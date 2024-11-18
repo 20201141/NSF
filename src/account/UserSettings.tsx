@@ -59,7 +59,7 @@ function UserSettings() {
       <div className="user-nav">
         <nav>
           <ul>
-            <li><Link to="/" className="user-nav-item">User Settings</Link></li>
+            <li><Link to="/account" className="user-nav-item">User Settings</Link></li>
             <li><Link to="/account/my-post" className="user-nav-item">My Posts</Link></li>
             <li><Link to="/account/personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
@@ -68,7 +68,7 @@ function UserSettings() {
 
       <div className="user-content">
         <Routes>
-          <Route path="/" element={<Settings />} />
+          <Route path="/account" element={<Settings />} />
           <Route path="/account/my-post" element={<MyPosts />} />
           <Route path="/account/personalize" element={<Personalize />} />
         </Routes>
