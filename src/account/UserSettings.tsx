@@ -53,10 +53,10 @@ const Personalize = () => {
   );
 };
 
-const UserSettings: React.FC = () => {
+function UserSettings {
   return (
-    <Router>
-      <div className="userNav">
+    <div className="user-set">
+      <div className="user-nav">
         <nav>
           <ul>
             <li><Link to="/" className="user-nav-item">User Settings</Link></li>
@@ -73,7 +73,7 @@ const UserSettings: React.FC = () => {
           <Route path="/personalize" element={<Personalize />} />
         </Routes>
       </div>
-    </Router>
+    </div>
   );
 };
 
