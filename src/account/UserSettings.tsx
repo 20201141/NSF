@@ -9,9 +9,9 @@ const UserSettings = () => {
     <div className="user-nav">
       <nav>
         <ul>
-          <li><NavLink to="/account/#" className="user-nav-item">User Settings</NavLink></li>
-          <li><NavLink to="/account/my-post" className="user-nav-item">My Posts</NavLink></li>
-          <li><NavLink to="/account/personalize" className="user-nav-item">Personalize</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "active nav-link" : "user-nav-item"} to="/account" end={true} >User Settings</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "active nav-link" : "user-nav-item"} to="/account/my-post" >My Posts</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "active nav-link" : "user-nav-item"} to="/account/personalize" >Personalize</NavLink></li>
         </ul>
       </nav>
       <Outlet />
