@@ -8,7 +8,10 @@ import filter from './images/filter-32.svg';
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
 
-import UserSettings from './account/UserSettings';
+import UserSettings from "./account/UserSettings";
+import Settings from "./account/UserSettings";
+import MyPosts from "./account/UserSettings";
+import Personalize from "./account/UserSettings";
 
 type Post = {
   post_id: number;
@@ -92,7 +95,11 @@ const App: React.FC = () => {
               </div>} />
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
-            <Route path="/account" element={<UserSettings />} />
+            <Route path="/account" element={<UserSettings />}>
+              <Route path="/" element={<Settings />} />
+              <Route path="my-post" element={<MyPosts />} />
+              <Route path="personalize" element={<Personalize />} />
+            </Route> 
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
 
           </Routes>

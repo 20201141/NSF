@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 //import type { UserAccount } from '../classes/UserAccount'; 
 //import type { Post } from '../classes/Post';
 import Button from "./Button";
@@ -11,26 +11,23 @@ function UserSettings() {
       <div className="user-nav">
         <nav>
           <ul>
-            <li><Link to="/account" className="user-nav-item">User Settings</Link></li>
-            <li><Link to="/#/my-post" className="user-nav-item">My Posts</Link></li>
-            <li><Link to="/#/personalize" className="user-nav-item">Personalize</Link></li>
+            <li><Link to="/" className="user-nav-item">User Settings</Link></li>
+            <li><Link to="my-post" className="user-nav-item">My Posts</Link></li>
+            <li><Link to="personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
         </nav>
+        <Outlet /> //placeholder location for nested children routes to be rendered
       </div>
 
       <div className="user-content">
-        <Routes>
-          <Route path="/account" element={<Settings />} />
-          <Route path="/#/my-post" element={<MyPosts />} />
-          <Route path="/#/personalize" element={<Personalize />} />
-        </Routes>
+        
       </div>
     </div>
   );
 }
 
 // User Settings Component
-const Settings = () => {
+function Settings() {
   // get user's info from DB
 
   
@@ -52,7 +49,7 @@ const Settings = () => {
 }
 
 // My Posts Component
-const MyPosts = () => {
+function MyPosts() {
   // get user's posts from DB
 
 
@@ -65,7 +62,7 @@ const MyPosts = () => {
 }
 
 // Personalize Component
-const Personalize = () => {
+function Personalize() {
   // get user's choice for theme mode from DB
 
 
