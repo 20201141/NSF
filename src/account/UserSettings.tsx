@@ -2,8 +2,11 @@ import React from 'react';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 //import type { UserAccount } from '../classes/UserAccount'; 
 //import type { Post } from '../classes/Post';
-import Button from "./Button";
 import './UserSettings.css';
+import Settings from "./Settings";
+import MyPosts from "./MyPosts";
+import Personalize from "./Personalize";
+
 
 const UserSettings = () => {
   return (
@@ -21,59 +24,11 @@ const UserSettings = () => {
 
       <div className="user-content">
         <Routes>
-          <Route index element={<Settings />} />
+          <Route path="/" element={<Settings />} />
           <Route path="my-post" element={<MyPosts />} />
           <Route path="personalize" element={<Personalize />} />
         </Routes>
       </div>
-    </div>
-  );
-}
-
-// User Settings Component
-function Settings() {
-  // get user's info from DB
-
-  
-  // change password
-  const handleClick = () => {
-    console.log("Button was clicked");
-  };
-
-  // display info
-  return (
-    <div>
-      <h1>User Settings</h1>
-      <p className="label">Username: {}</p>
-      <p className="label">Password: {}</p>
-      <p className="label">Email: {}</p> 
-      <Button onClick={handleClick}>Change Password</Button>
-    </div>
-  );
-}
-
-// My Posts Component
-function MyPosts() {
-  // get user's posts from DB
-
-
-  // display posts
-  return (
-    <div>
-      <h1>Posts</h1>
-    </div>
-  );
-}
-
-// Personalize Component
-function Personalize() {
-  // get user's choice for theme mode from DB
-
-
-  // display isDark
-  return (
-    <div>
-      <h1>Personalize</h1>
     </div>
   );
 }
