@@ -21,7 +21,7 @@ function UserSettings() {
 
       <div className="user-content">
         <Routes>
-          <Route index element={<Settings />} />
+          <Route path="/" element={<Settings />} />
           <Route path="my-post" element={<MyPosts />} />
           <Route path="personalize" element={<Personalize />} />
         </Routes>
