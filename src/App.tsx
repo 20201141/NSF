@@ -96,7 +96,7 @@ const App: React.FC = () => {
             <Route path="/create-post" element={<div>Create Post Component</div>} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<UserSettings />}>
-              <Route path="/" element={<Settings />} />
+              <Route index element={<Settings />} />
               <Route path="my-post" element={<MyPosts />} />
               <Route path="personalize" element={<Personalize />} />
             </Route> 
