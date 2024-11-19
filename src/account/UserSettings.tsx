@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Routes, Route, Link, Outlet } from 'react-router-dom';
 //import type { UserAccount } from '../classes/UserAccount'; 
 //import type { Post } from '../classes/Post';
 import Button from "./Button";
@@ -16,11 +16,15 @@ function UserSettings() {
             <li><Link to="personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
         </nav>
-        <Outlet /> //placeholder location for nested children routes to be rendered
+        <Outlet />
       </div>
 
       <div className="user-content">
-        
+        <Routes>
+          <Route index element={<Settings />} />
+          <Route path="my-post" element={<MyPosts />} />
+          <Route path="personalize" element={<Personalize />} />
+        </Routes>
       </div>
     </div>
   );
