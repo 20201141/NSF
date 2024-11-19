@@ -34,3 +34,9 @@ li a {
 li a.active {
   font-weight: bold; 
 }
+
+button {
+  border: none;
+  background-color: #D9D9D9;
+  padding: 0.7em;
+}

@@ -1,4 +1,5 @@
 import Button from "./Button";
+import "./UserSettings.css";
 
 // User Settings Component
 const Settings = () => {
