@@ -9,9 +9,9 @@ const UserSettings = () => {
     <div className="user-nav">
       <nav>
         <ul>
-          <li><NavLink to="/account" className="user-nav-item">User Settings</Link></li>
-          <li><NavLink to="/account/my-post" className="user-nav-item">My Posts</Link></li>
-          <li><NavLink to="/account/personalize" className="user-nav-item">Personalize</Link></li>
+          <li><NavLink to="/account" className="user-nav-item">User Settings</NavLink></li>
+          <li><NavLink to="/account/my-post" className="user-nav-item">My Posts</NavLink></li>
+          <li><NavLink to="/account/personalize" className="user-nav-item">Personalize</NavLink></li>
         </ul>
       </nav>
       <Outlet />
