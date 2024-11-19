@@ -16,8 +16,8 @@ function UserSettings() {
             <li><Link to="personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
         </nav>
-        <Outlet />
       </div>
+      <Outlet />
 
       <div className="user-content">
         <Routes>
