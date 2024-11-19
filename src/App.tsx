@@ -4,6 +4,7 @@ import './App.css';
 
 import logo from './images/logo.png';
 import filter from './images/filter-32.svg';
+import PageNotFound from "./PageNotFound";
 
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
@@ -94,6 +95,7 @@ const App: React.FC = () => {
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<UserSettings />} />
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
+            <Route path="*" element={<PageNotFound />} />
 
           </Routes>
         </div>
