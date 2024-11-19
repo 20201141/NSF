@@ -5,13 +5,13 @@ import { Routes, Route, Link, Outlet } from 'react-router-dom';
 import Button from "./Button";
 import './UserSettings.css';
 
-function UserSettings() {
+const UserSettings = () => {
   return (
     <div className="user-set">
       <div className="user-nav">
         <nav>
           <ul>
-            <li><Link to="/settings" className="user-nav-item">User Settings</Link></li>
+            <li><Link to="settings" className="user-nav-item">User Settings</Link></li>
             <li><Link to="my-post" className="user-nav-item">My Posts</Link></li>
             <li><Link to="personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
@@ -21,7 +21,7 @@ function UserSettings() {
 
       <div className="user-content">
         <Routes>
-          <Route path="/settings" element={<Settings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="my-post" element={<MyPosts />} />
           <Route path="personalize" element={<Personalize />} />
         </Routes>
