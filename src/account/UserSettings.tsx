@@ -16,12 +16,12 @@ const UserSettings = () => {
             <li><Link to="personalize" className="user-nav-item">Personalize</Link></li>
           </ul>
         </nav>
+        <Outlet />
       </div>
-      <Outlet />
 
       <div className="user-content">
         <Routes>
-          <Route path="/" element={<Settings />} />
+          <Route index element={<Settings />} />
           <Route path="my-post" element={<MyPosts />} />
           <Route path="personalize" element={<Personalize />} />
         </Routes>
@@ -60,7 +60,7 @@ function MyPosts() {
   // display posts
   return (
     <div>
-      Posts
+      <h1>Posts</h1>
     </div>
   );
 }
@@ -73,7 +73,7 @@ function Personalize() {
   // display isDark
   return (
     <div>
-      Personalize
+      <h1>Personalize</h1>
     </div>
   );
 }
