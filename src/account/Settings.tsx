@@ -41,8 +41,10 @@ const Settings: React.FC = () => {
           <p className="label">Re-enter password: </p>
           <input type="password" value={reenterPassword} onChange={(e) => setReenterPassword(e.target.value)} />
           {errorMessage && <p className="error">{errorMessage}</p>}
-          <Button className="submit" onClick={handleSubmit}>Submit</Button>
-          <Button onClick={handleClick}>Cancel</Button>
+          <div className="buttons">
+            <Button className="submit" onClick={handleSubmit}>Submit</Button>
+            <Button onClick={handleClick}>Cancel</Button>
+          </div>
         </div>
       ) : (
         <div>

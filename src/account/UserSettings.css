@@ -40,6 +40,10 @@ li a.active {
   flex-direction: column;
 }
 
+.buttons {
+  margin-top: 1em;
+}
+
 button {
   border: none;
   background-color: #D9D9D9;
