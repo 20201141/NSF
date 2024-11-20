@@ -35,6 +35,11 @@ li a.active {
   font-weight: bold; 
 }
 
+.password-content {
+  display: flex;
+  flex-direction: column;
+}
+
 button {
   border: none;
   background-color: #D9D9D9;
@@ -44,4 +49,8 @@ button {
 button:hover {
   background-color: #bbbbbb;
   cursor: pointer;
+}
+
+.submit {
+  margin-right: 1em;
 }
