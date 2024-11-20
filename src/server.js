@@ -47,9 +47,12 @@ app.get('/user-posts/:username', async (req, res) => {
   try {
     // Query to retrieve posts from the "post" table
     const result = await pool.query(`
-      SELECT post_id, title, date, post_type, isresolved, code, getnotif
-      FROM post
-      WHERE username = $1`,
+      SELECT post_id, title, date, post_type, isresolved, getnotif
+      FROM post, user_account
+      WHERE 
+        post.username = user_account.username
+        AND
+        post.username = '$1'`,
       [username]
     );
 
