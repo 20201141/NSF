@@ -17,7 +17,7 @@ const MyPosts: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/user-posts/${username}');
+        const response = await fetch(`/api/user-posts/${username}`);
         const data = await response.json();
 
         if (Array.isArray(data)) {
