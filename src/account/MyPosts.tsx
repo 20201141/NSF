@@ -18,6 +18,10 @@ const MyPosts: React.FC = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`/api/user-posts/${username}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
+        }
+
         const data = await response.json();
 
         if (Array.isArray(data)) {
