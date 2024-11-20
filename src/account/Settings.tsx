@@ -33,7 +33,7 @@ const Settings: React.FC = () => {
     <div>
       <h1>User Settings</h1>
       { showChangePassword ? (
-        <div>
+        <div className="password-content">
           <p className="label">Enter current password: </p>
           <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
           <p className="label">Enter new password: </p> 
@@ -41,7 +41,7 @@ const Settings: React.FC = () => {
           <p className="label">Re-enter password: </p>
           <input type="password" value={reenterPassword} onChange={(e) => setReenterPassword(e.target.value)} />
           {errorMessage && <p className="error">{errorMessage}</p>}
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button className="submit" onClick={handleSubmit}>Submit</Button>
           <Button onClick={handleClick}>Cancel</Button>
         </div>
       ) : (

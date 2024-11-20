@@ -3,11 +3,12 @@ import React from 'react';
 interface ButtonProps {
   onClick: () => void;
   children: React.ReactNode; // content to be displayed in button
+  className?: string;        // optional
 }
 
-const Button: React.FC<ButtonProps> = ({ onClick, children }) => {
+const Button: React.FC<ButtonProps> = ({ onClick, children, className }) => {
   return (
-    <button onClick={onClick}>{children}</button>
+    <button className={className} onClick={onClick}>{children}</button>
   );
 };
 
