@@ -58,3 +58,8 @@ button:hover {
 .submit {
   margin-right: 1em;
 }
+
+.password-input {
+  width: 30em;
+  height: 1.5em;
+}
