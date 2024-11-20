@@ -19,13 +19,13 @@ const Settings: React.FC = () => {
 
   // verifies password is the same when re-entering
   const handleSubmit = async () => {
-    if (newPassword != reenterPassword) {
+    if (newPassword !== reenterPassword) {
       setErrorMessage("Passwords do not match!");
       return;
     }
 
     //implement backend to fetch password from DB
-    
+
   };
 
   // display info
