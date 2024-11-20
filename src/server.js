@@ -40,6 +40,27 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+// API Route to get all posts from specific user
+app.get('/user-posts/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Query to retrieve posts from the "post" table
+    const result = await pool.query(`
+      SELECT post_id, title, date, post_type, isresolved, code, getnotif
+      FROM post
+      WHERE username = $1`,
+      [username]
+    );
+
+    // Return the rows directly as an array
+    res.json(result.rows);  // Make sure this returns an array directly
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

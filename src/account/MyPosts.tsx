@@ -3,15 +3,21 @@ import { Link } from "react-router-dom";
 import { Post } from "../classes/Post";
 //import "./MyPosts.css";
 
+const getLoggedInUsername = (): string => {
+  //fix later when implementing login feature
+  return "pythonisgreat123";
+}
+
 // My Posts Component
 const MyPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const username = getLoggedInUsername();
   
   // get user's posts from DB
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/posts');
+        const response = await fetch('/api/user-posts/${username}');
         const data = await response.json();
 
         if (Array.isArray(data)) {
@@ -24,7 +30,7 @@ const MyPosts: React.FC = () => {
       }
     };
     fetchPosts();
-  }, []);
+  }, [username]);
 
   // handlers
   const handleEdit = (post_id: number) => {
