@@ -52,7 +52,7 @@ app.get('/user-posts/:username', async (req, res) => {
       WHERE 
         post.username = user_account.username
         AND
-        post.username = '$1'`,
+        post.username = $1`,
       [username]
     );
 
