@@ -35,6 +35,8 @@ li a.active {
   font-weight: bold; 
 }
 
+/* Password Change Feature */
+
 .password-content {
   display: flex;
   flex-direction: column;
@@ -63,3 +65,4 @@ button:hover {
   width: 30em;
   height: 1.5em;
 }
+
