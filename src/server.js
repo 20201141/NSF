@@ -15,8 +15,10 @@ const pool = new Pool({
 });
 
 // Middleware
+const router = express.Router();
 app.use(cors());
 app.use(express.json());
+app.use('/api', router);
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
