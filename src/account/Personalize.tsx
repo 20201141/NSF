@@ -42,8 +42,8 @@ const Personalize: React.FC = () => {
   return (
     <div className="personalize-content">
       <h1>Personalize</h1>
-      <div className="fake-button">
-        <p>Dark Mode</p>
+      <div className="toggle">
+        <p className="toggle-label">Dark Mode</p>
         <Button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</Button>
       </div>
     </div>

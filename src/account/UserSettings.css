@@ -67,6 +67,33 @@ button:hover {
 }
 
 /* Personalize */
-.fake-button {
-  background-color: #D9D9D9;
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1em;
+}
+
+.toggle-label {
+  font-size: 1.25em;
+  font-weight: 500;
+}
+
+.toggle-btn {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.toggle-btn.on {
+  background-color: #444;
+  color: #fff;
+}
+
+.toggle-btn.off {
+  background-color: #ddd;
+  color: #000;
 }
