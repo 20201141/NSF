@@ -5,7 +5,7 @@ import { Post } from "../classes/Post";
 
 const getLoggedInUsername = (): string => {
   //fix later when implementing login feature
-  return "pythonisgreat123";
+  return 'pythonisgreat123';
 }
 
 // My Posts Component

@@ -57,8 +57,7 @@ app.get('/user-posts/:username', async (req, res) => {
       [username]
     );
 
-    // Return the rows directly as an array
-    res.json(result.rows);  // Make sure this returns an array directly
+    res.json(result.rows); 
   } catch (err) {
     console.error('Error fetching posts:', err);
     res.status(500).json({ message: 'Server error' });
