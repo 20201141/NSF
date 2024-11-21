@@ -41,7 +41,7 @@ app.get('/posts', async (req, res) => {
 });
 
 // API Route to get all posts from specific user
-app.get('/user-posts/:username', async (req, res) => {
+app.get('/api/user-posts/:username', async (req, res) => {
   const { username } = req.params;
 
   try {
