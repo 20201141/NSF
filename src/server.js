@@ -40,8 +40,9 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+/* User Settings Subpage */
 // API Route to get all posts from specific user
-app.get('/api/user-posts/:username', async (req, res) => {
+app.get('/user-posts/:username', async (req, res) => {
   const { username } = req.params;
 
   try {
@@ -52,8 +53,7 @@ app.get('/api/user-posts/:username', async (req, res) => {
       WHERE 
         post.username = user_account.username
         AND
-        post.username = $1
-        `,
+        post.username = $1`,
       [username]
     );
 
@@ -63,6 +63,54 @@ app.get('/api/user-posts/:username', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// API Route to get the user's theme preference
+app.get('/api/user-theme', async (req, res) => {
+  const username = req.query.username;
+
+  if (!username) {
+    return res.status(400).json({ message: "Username is required"});
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT isDark FROM user_account WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found"});
+    }
+
+    res.json({ isDark: result.row[0].isDark });
+  } catch (error) {
+    console.error("Error fetching theme preference:", error);
+    res.status(500).json({ message: "Server error"});
+  }
+});
+
+// API Route to change user's theme preference
+app.post('/api/user-theme', async (req, res) => {
+  const { username, isDark } = req.body;
+
+  if (!username || typeof isDark !== 'boolean') {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+
+  try {
+    await pool.query(
+      'UPDATE user_account SET isDark = $1 WHERE username = $2',
+      [isDark, username]
+    );
+
+    res.status(200).json({ message: "Theme preference updated" });
+  } catch (err) {
+    console.error("Error updating theme preference:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 // Start the server
 app.listen(PORT, () => {
