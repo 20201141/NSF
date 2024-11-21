@@ -15,10 +15,8 @@ const pool = new Pool({
 });
 
 // Middleware
-const router = express.Router();
 app.use(cors());
 app.use(express.json());
-app.use('/api', router);
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
@@ -54,7 +52,8 @@ app.get('/user-posts/:username', async (req, res) => {
       WHERE 
         post.username = user_account.username
         AND
-        post.username = $1`,
+        post.username = $1
+        `,
       [username]
     );
 
