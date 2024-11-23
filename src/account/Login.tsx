@@ -45,38 +45,42 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       <div className="login-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
-        <form onSubmit={handleSubmit}>
-          <input 
-            className="login-input"
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleInputChange}
-            required
-          />
-          {isSignUp && (
+        <div className="login-group">
+          <form onSubmit={handleSubmit}>
             <input 
               className="login-input"
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
               onChange={handleInputChange}
               required
             />
-          )}
-          <input 
-            className="login-input"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-          <button type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
-        </form>
+            {isSignUp && (
+              <input 
+                className="login-input"
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            )}
+            <input 
+              className="login-input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+            />
+          </form>
+        </div>
+        <div className="login-group">
+          <button className="login-button" type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
+        </div>
         <button className="toggle-button" onClick={() => setIsSignUp(!isSignUp)}>
             {isSignUp ? "Already have an account? Log In" : "New user? Sign Up"}
         </button>

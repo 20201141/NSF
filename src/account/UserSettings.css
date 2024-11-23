@@ -50,7 +50,7 @@ li a.active {
 }
 
 .login-content {
-  background: white;
+  background: #D9D9D9;
   padding: 20px;
   border-radius: 8px;
   width: 17em;
@@ -59,6 +59,14 @@ li a.active {
   position: relative;
   text-align: center;
 }
+
+.login-input {
+  border: none;
+  padding: 0.3em;
+  margin-bottom: 1em;
+
+}
+
 
 .close-button {
   position: absolute;
@@ -72,9 +80,10 @@ li a.active {
 
 .toggle-button {
   margin-top: 10px;
-  background: none;
+  background: #4f87ff;
   border: none;
-  color: blue;
+  border-radius: 3px;
+  color: white;
   cursor: pointer;
   text-decoration: none;
 }
