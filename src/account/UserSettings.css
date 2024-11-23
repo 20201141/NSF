@@ -60,6 +60,15 @@ li a.active {
   text-align: center;
 }
 
+.login-group form {
+  margin: 1.6em 0 1em 0;
+}
+
+.or {
+  color: gray;
+  font-size: 11px;
+}
+
 .login-input {
   border: none;
   padding: 0.3em;
@@ -67,6 +76,13 @@ li a.active {
 
 }
 
+.login-button {
+  border: none;
+  padding: 0.5em 5.2em;
+  background: #4f87ff;
+  color: white;
+  border-radius: 3px;
+}
 
 .close-button {
   position: absolute;
@@ -79,8 +95,8 @@ li a.active {
 }
 
 .toggle-button {
-  margin-top: 10px;
   background: #4f87ff;
+  padding: 0.5em 2.3em;
   border: none;
   border-radius: 3px;
   color: white;
