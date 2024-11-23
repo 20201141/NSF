@@ -66,6 +66,16 @@ button:hover {
   height: 1.5em;
 }
 
+/* My Posts */
+.post-card {
+  display: flex;
+  
+}
+
+.post-tags {
+  margin-bottom: 1em;
+}
+
 /* Personalize */
 .toggle {
   display: flex;
