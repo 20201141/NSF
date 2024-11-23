@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "./Button";
 import "./UserSettings.css";
 
 interface LoginProps {
@@ -44,10 +43,11 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   return (
     <div className="login-overlay">
       <div className="login-content">
-        <Button className="close-button" onClick={onClose}>&times;</Button>
+        <button className="close-button" onClick={onClose}>&times;</button>
         <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
         <form onSubmit={handleSubmit}>
           <input 
+            className="login-input"
             type="text"
             name="username"
             placeholder="Username"
@@ -57,6 +57,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           />
           {isSignUp && (
             <input 
+              className="login-input"
               type="email"
               name="email"
               placeholder="Email"
@@ -66,6 +67,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
             />
           )}
           <input 
+            className="login-input"
             type="password"
             name="password"
             placeholder="Password"
@@ -73,10 +75,11 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
             onChange={handleInputChange}
             required
           />
-          <Button className="toggle-button" onClick={() => setIsSignUp(!isSignUp)}>
-            {isSignUp ? "Already have an account? Log In" : "New user? Sign Up"}
-          </Button>
+          <button type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
         </form>
+        <button className="toggle-button" onClick={() => setIsSignUp(!isSignUp)}>
+            {isSignUp ? "Already have an account? Log In" : "New user? Sign Up"}
+        </button>
       </div>
     </div>
   );
