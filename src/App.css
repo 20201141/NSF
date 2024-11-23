@@ -36,6 +36,13 @@
 .filter-button {
   height: 33px;
   width: 40px;
+  border: none;
+  background-color: #D9D9D9;
+}
+
+.filter-button:hover {
+  background-color: #bbbbbb;
+  cursor: pointer;
 }
 
 /* Sidebar */
