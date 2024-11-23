@@ -13,7 +13,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
