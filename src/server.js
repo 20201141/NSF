@@ -40,6 +40,52 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+/* User Account */
+// API Route to sign up
+app.post('/api/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    await pool.query(
+      'INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)',
+      [username, email, password]
+    );
+    res.status(201).json({ message: 'Signup successful' });
+  } catch (err) {
+    console.error('Signup error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API Route to login
+app.post('/api/login', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!password || (!username && !email)) {
+    return res.status(400).json({ message: "Username or email, and password are required" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM user_account WHERE (username = $1 OR email = $2) AND password = $3`,
+      [username, email, password]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ message: 'Login successful' });
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 /* User Settings Subpage */
 // API Route to get all posts from specific user
 app.get('/user-posts/:username', async (req, res) => {

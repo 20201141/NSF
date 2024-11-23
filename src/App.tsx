@@ -9,6 +9,7 @@ import PageNotFound from "./PageNotFound";
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
 
+import Login from "./account/Login";
 import UserSettings from "./account/UserSettings";
 import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
@@ -30,6 +31,8 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAccount, setIsAccount] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -61,6 +64,13 @@ const App: React.FC = () => {
     post.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isLoggedIn) {
+      event.preventDefault();
+      setIsAccount(true);
+    }
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -80,11 +90,12 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        <Login isOpen={isAccount} onClose={() => setIsAccount(false)} />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
-          <Link to="/create-post" className="menu-item">Create Post</Link>
+          <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item">My Account</Link>
+          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
         </div>
 
         <div className="content">

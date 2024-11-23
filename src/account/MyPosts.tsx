@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Post } from "../classes/Post";
 import "../forum/Forum.css";
+import "./UserSettings.css";
 
 const getLoggedInUsername = (): string => {
   //fix later when implementing login feature
