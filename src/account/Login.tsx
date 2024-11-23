@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "./Button";
+import "./UserSettings.css";
 
 interface LoginProps {
   isOpen: boolean;
