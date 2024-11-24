@@ -82,6 +82,7 @@ li a.active {
   background: #4f87ff;
   color: white;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 .close-button {
