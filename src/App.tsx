@@ -7,6 +7,7 @@ import filter from './images/filter-32.svg';
 
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
+import PostForm from "./postCreation/PostForm";
 
 type Post = {
   post_id: number;
@@ -88,7 +89,7 @@ const App: React.FC = () => {
               <div>
                 <Forum posts={filteredPosts} />
               </div>} />
-            <Route path="/create-post" element={<div>Create Post Component</div>} />
+            <Route path="/create-post" element={<PostForm />} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
