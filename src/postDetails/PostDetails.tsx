@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import './PostDetails.css';
+import { CommentDetails } from './CommentDetails';
+import { Comment } from '../classes/Comment';
 
 type Post = {
   post_id: number;
@@ -43,7 +45,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     return <div>Post not found</div>;
   }
 
-  return (
+  const comments: Comment[] = [];
+
+  return (<>
     <div className="post-details">
       <p>{post.username} • {new Date(post.date).toLocaleString()}</p>
       <p>Category: {post.post_type}</p>
@@ -58,7 +62,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
       )}
       {post.getnotif && <p>Notifications: Enabled</p>}
     </div>
-  );
+    {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)}
+  </>);
 };
 
 export default PostDetails;
