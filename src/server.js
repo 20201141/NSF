@@ -50,14 +50,26 @@ app.post('/api/signup', async (req, res) => {
   }
 
   try {
-    await pool.query(
-      'INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)',
-      [username, email, password]
+    // Check if the username or email already exists
+    const existingUser = await pool.query(
+      `SELECT * FROM user_account WHERE username = $1 OR email = $2`,
+      [username, email]
     );
-    res.status(201).json({ message: 'Signup successful' });
-  } catch (err) {
-    console.error('Signup error:', err);
-    res.status(500).json({ message: 'Server error' });
+
+    if (existingUser.rows.length > 0) {
+      return res.status(409).json({ message: "Username or email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      `INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)`,
+      [username, email, hashedPassword]
+    );
+    res.status(201).json({ message: "Sign up successful" });
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -66,23 +78,34 @@ app.post('/api/login', async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!password || (!username && !email)) {
-    return res.status(400).json({ message: "Username or email, and password are required" });
+    return res.status(400).json({ message: "Username and password are required" });
   }
 
   try {
-    const result = await pool.query(
-      `SELECT * FROM user_account WHERE (username = $1 OR email = $2) AND password = $3`,
-      [username, email, password]
+    const user = await pool.query(
+      `SELECT * FROM user_account WHERE username = $1`,
+      [username]
     );
 
-    if (result.rows.length > 0) {
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
+    if (user.rows.length === 0) {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error' });
+
+    const isPasswordValid = await bcrypt.compare(password, user.rows[0].password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        username: user.rows[0].username,
+        email: user.rows[0].email,
+        isDark: user.rows[0].isdark,
+      },
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
