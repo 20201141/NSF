@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import './PostDetails.css';
-import { CommentDetails } from './CommentDetails';
+import CommentDetails from './CommentDetails';
 import { Comment } from '../classes/Comment';
 
 type Post = {
