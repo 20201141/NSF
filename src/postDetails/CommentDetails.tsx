@@ -41,7 +41,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
   function onExpand() {
     const replies = comments
       .map((cmnt, id) => ({ cmnt, id }))
-      .filter(({cmnt}) => cmnt.parent_id == commentIndex)
+      .filter(({cmnt}) => cmnt.parent_id === commentIndex)
       .map(({id}) => id);
     const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} />);
     if(replies.length > 0) {
