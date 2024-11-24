@@ -102,6 +102,7 @@ li a.active {
   color: white;
   cursor: pointer;
   text-decoration: none;
+  width: 14em;
 }
 
 /* Password Change Feature */

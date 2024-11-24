@@ -23,14 +23,14 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     try {
       const endpoint = isSignUp ? "/api/signup" : "/api/login";
       const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {"Content-Type": "application/json", },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData), 
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Success:", data);
+        console.log(`${isSignUp ? 'Sign Up' : 'Log In'} successful`, data);
         onClose();
       } else {
         console.error("Error:", await response.json());
