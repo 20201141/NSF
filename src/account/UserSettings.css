@@ -71,9 +71,9 @@ li a.active {
 
 .login-input {
   border: none;
-  padding: 0.3em;
+  padding: 0.4em;
   margin-bottom: 1em;
-
+  border-radius: 2px;
 }
 
 .login-button {

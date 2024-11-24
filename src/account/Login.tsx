@@ -76,14 +76,15 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
               onChange={handleInputChange}
               required
             />
+            <div className="login-group">
+              <button className="login-button" type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
+          </div>
           </form>
         </div>
-        <div className="login-group">
-          <button className="login-button" type="submit">{isSignUp ? "Sign Up" : "Log In"}</button>
-        </div>
+        
         <p className="or">or</p>
         <button className="toggle-button" onClick={() => setIsSignUp(!isSignUp)}>
-            {isSignUp ? "Already have an account? Log In" : "New user? Sign Up"}
+            {isSignUp ? "Log In" : "New user? Sign Up"}
         </button>
       </div>
     </div>
