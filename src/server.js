@@ -101,6 +101,25 @@ app.get('/comments/:postId', async (req, res) => {
   }
 });
 
+//API Route to update the comment's likes
+app.patch('/comments/:commentId/likes', async (req, res) => {
+  const { commentId } = req.params;
+  const { increment } = req.body; // should be true or false
+  try {
+    const query = `UPDATE comment SET likes = likes + $1 WHERE comment_id = $2 RETURNING likes`;
+    const value = increment ? 1 : -1;
+    const result = await pool.query(query, [value, commentId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Comment not found'});
+    }
+    res.status(200).json({ likes: result.rows[0].likes});
+  } catch (err) {
+    console.error('Error updating likes:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
