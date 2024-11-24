@@ -75,7 +75,7 @@ app.post('/comments', async (req, res) => {
   }
 });
 
-//API Route to get all of the post's comments
+// API Route to get all of the post's comments
 app.get('/comments/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
@@ -101,19 +101,48 @@ app.get('/comments/:postId', async (req, res) => {
   }
 });
 
-//API Route to update the comment's likes
+// API Route to update the comment's likes
 app.patch('/comments/:commentId/likes', async (req, res) => {
   const { commentId } = req.params;
-  const { increment } = req.body; // should be true or false
+  const { username, increment } = req.body; // increment should be true or false
   try {
-    const query = `UPDATE comment SET likes = likes + $1 WHERE comment_id = $2 RETURNING likes`;
-    const value = increment ? 1 : -1;
-    const result = await pool.query(query, [value, commentId]);
+    const checkLike = await pool.query(
+      'SELECT * FROM likes WHERE comment_id = $1 AND username = $2',
+      [commentId, username]
+    );
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'Comment not found'});
+    if (increment) { // adding like
+      if (checkLike.rowCount > 0) {
+        return res.status(400).json({ message: 'User already liked this comment'});
+      }
+
+      // insert into likes table
+      await pool.query(
+        `INSERT INTO likes (comment_id, username) VALUES ($1, $2)`,
+        [commentId, username]
+      );
+
+      const result = await pool.query(
+        `UPDATE comment SET likes = likes + 1 WHERE comment_id = $1 RETURNING likes`,
+        [commentId]
+      );
+      return res.status(200).json({ likes: result.rows[0].likes});
+    } else { // removing like
+      if (checkLike.rowCount > 0) {
+        return res.status(400).json({ message: 'User already liked this comment'});
+      }
+
+      await pool.query(
+        `DELETE FROM likes WHERE comment_id = $1 AND username = $2`,
+        [commentId, username]
+      );
+
+      const result = await pool.query(
+        `UPDATE comment SET likes = likes - 1 WHERE comment_id = $1 RETURNING likes`,
+        [commentId]
+      );
+      return res.status(200).json({ likes: result.rows[0].likes});
     }
-    res.status(200).json({ likes: result.rows[0].likes});
   } catch (err) {
     console.error('Error updating likes:', err);
     res.status(500).json({ message: 'Server error' });
