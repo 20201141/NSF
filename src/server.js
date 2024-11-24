@@ -75,6 +75,32 @@ app.post('/comments', async (req, res) => {
   }
 });
 
+//API Route to get all of the post's comments
+app.get('/comments/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT comment_id, post_id, username, parent_id, content, date, likes
+      FROM comment 
+      WHERE post_id = $1 
+      ORDER BY date ASC`,
+      [postId]
+    );
+
+    const comments = result.rows.map((row) => ({
+      content: row.content,
+      date: row.date,
+      likes: row.likes,
+      username: row.username,
+      parent_id: row.parent_id,
+    }));
+    res.status(200).json(comments);
+  } catch (err) {
+    console.error('Error getting comments:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
