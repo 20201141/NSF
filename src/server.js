@@ -40,6 +40,41 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+// API Route to create a comment; returns comment type
+app.post('/comments', async (req, res) => {
+  const { post_id, username, parent_id, content } = req.body;
+
+  if (!post_id || !username || !content ) {
+    return res.status(400).json({ message: 'post_id, username, and content are required!'})
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO comment (post_id, username, parent_id, content, date, likes)
+      VALUES ($1, $2, $3, CURRENT_TIMESTAMP, 0)
+      RETURNING comment_id, post_id, username, parent_id, content, date, likes`,
+      [post_id, username, parent_id || null, content]
+    );
+    
+    // make it comment type
+    const comment = result.rows[0];
+    const matchType = {
+      content: comment.content,
+      date: comment.date,
+      likes: comment.likes,
+      username: comment.username,
+      parent_id: comment.parent_id,
+    };
+    res.status(201).json(matchType);
+  } catch (err) {
+    console.error('Error creating comment:', err);
+    if (err.code == '23503') {
+      return res.status(400).json({ message: 'Invalid post_id or username'});
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
