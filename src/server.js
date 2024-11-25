@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
+const PORT = 3000;
 
 // PostgreSQL connection setup
 const pool = new Pool({
@@ -15,12 +15,12 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors({origin: "http://localhost:3000"}));
+app.use(cors());
 app.use(express.json());
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
-  res.send('Server is running on port 5000');
+  res.send('Server is up and running');
 });
 
 // API Route to get all posts
