@@ -15,12 +15,12 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({origin: "http://localhost:3000"}));
 app.use(express.json());
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
-  res.send('Server is up and running');
+  res.send('Server is running on port 5000');
 });
 
 // API Route to get all posts
