@@ -19,9 +19,10 @@ type Post = {
 type PostDetailsProps = {
   posts: Post[];
   loading: boolean;
+  username: string;
 };
 
-const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
+const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) => {
   const { postId } = useParams<{ postId: string }>();
 
   console.log("Loading:", loading);
@@ -62,7 +63,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
       )}
       {post.getnotif && <p>Notifications: Enabled</p>}
     </div>
-    {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)}
+    {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)}
   </>);
 };
 
