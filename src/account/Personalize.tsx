@@ -24,8 +24,8 @@ const Personalize: React.FC = () => {
 
     try {
       await fetch('/api/user-theme', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', },
+        method: "POST",
+        headers: {"Content-Type": "application/json", },
         body: JSON.stringify({ isDark: newMode }),
       });
 
