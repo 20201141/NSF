@@ -42,7 +42,7 @@ app.get('/posts', async (req, res) => {
 
 /* User Account */
 // API Route to sign up
-app.post('/api/signup', async (req, res) => {
+app.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
@@ -74,8 +74,8 @@ app.post('/api/signup', async (req, res) => {
 });
 
 // API Route to login
-app.post('/api/login', async (req, res) => {
-  const { username, email, password } = req.body;
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
   if (!password || (!username && !email)) {
     return res.status(400).json({ message: "Username and password are required" });
