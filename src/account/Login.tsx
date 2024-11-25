@@ -37,8 +37,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           });
 
           onClose();
-        } else {
-          const errData = await response.json();
         }
       } catch (error) {
         console.error('Error fetching user account:', error);
@@ -47,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       }
     };
     fetchData();
-  }, [isSubmitting, formData, isSignUp, onClose]);
+  }, [isSubmitting, formData, isSignUp, setUser, onClose]);
 
   if (!isOpen) return null;
 
