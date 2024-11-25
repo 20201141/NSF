@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUser } from "../UserInfo";
+import { useUser } from "./UserInfo";
 import "./UserSettings.css";
 
 interface LoginProps {
@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     event.preventDefault();
     
     try {
-      const endpoint = isSignUp ? '/api/signup' : '/api/login';
+      const endpoint = isSignUp ? "/api/signup" : "/api/login";
 
       console.log("Sending request to:", endpoint);
       console.log("Payload:", formData);

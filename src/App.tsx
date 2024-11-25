@@ -9,7 +9,7 @@ import PageNotFound from "./PageNotFound";
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
 
-import Login from "./account/Login";
+import Login from "./Login";
 import UserSettings from "./account/UserSettings";
 import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
