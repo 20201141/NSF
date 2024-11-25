@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Post } from './classes/Post'
 import './App.css';
 
 import logo from './images/logo.png';
@@ -16,17 +17,7 @@ import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
 import Personalize from './account/Personalize';
 
-type Post = {
-  post_id: number;
-  username: string;
-  date: string;
-  post_type: string;
-  title: string;
-  content: string;
-  isresolved: boolean;
-  code?: string;
-  getnotif?: boolean;
-};
+
 
 const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);

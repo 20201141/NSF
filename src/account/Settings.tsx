@@ -23,7 +23,18 @@ const Settings: React.FC = () => {
       return;
     }
 
+
     //implement backend to fetch password from DB
+    // try {
+    //   const response = await fetch(`/api/changePassword/${newPassword}`);
+    // }
+    const response = await fetch(`/api/changePassword/${newPassword}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(currentPassword),
+    });
+    
+    
 
   };
 
