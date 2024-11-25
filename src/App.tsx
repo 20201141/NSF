@@ -70,7 +70,6 @@ const App: React.FC = () => {
     if (!isLoggedIn) {
       event.preventDefault();
       setIsAccount(true);
-      setIsLoggedIn(true);
     } 
   };
 
