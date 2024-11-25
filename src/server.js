@@ -134,7 +134,7 @@ app.get('/user-posts/:username', async (req, res) => {
 });
 
 // API Route to get the user's theme preference
-app.get('/api/user-theme', async (req, res) => {
+app.get('/user-theme', async (req, res) => {
   const username = req.query.username;
 
   if (!username) {
@@ -159,7 +159,7 @@ app.get('/api/user-theme', async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/api/user-theme', async (req, res) => {
+app.post('/user-theme', async (req, res) => {
   const { username, isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
