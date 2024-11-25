@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Post } from "../classes/Post";
 import { useUser } from "../UserInfo";
+
 import "../forum/Forum.css";
 import "./UserSettings.css";
 
