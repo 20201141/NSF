@@ -1,16 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Forum.css';
-
-type Post = {
-  post_id: number;
-  username: string;
-  date: string;
-  post_type: string;
-  title: string;
-  content: string;
-  isresolved: boolean;
-};
+import { Post } from '../classes/Post';
 
 type ForumProps = {
   posts: Post[];
