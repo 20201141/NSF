@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Post } from "../classes/Post";
-import { useUser } from "../UserInfo";
-
 import "../forum/Forum.css";
 import "./UserSettings.css";
+
+const getLoggedInUsername = (): string => {
+  return 'pythonisgreat123';
+}
 
 // My Posts Component
 const MyPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const { user } = useUser();
-  const username = user.username;
+  const username = getLoggedInUsername();
   
   // get user's posts from DB
   useEffect(() => {
