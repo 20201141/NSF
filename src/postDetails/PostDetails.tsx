@@ -3,18 +3,7 @@ import { useParams } from 'react-router-dom';
 import './PostDetails.css';
 import CommentDetails from './CommentDetails';
 import { Comment } from '../classes/Comment';
-
-type Post = {
-  post_id: number;
-  username: string;
-  date: string;
-  post_type: string;
-  title: string;
-  content: string;
-  isresolved: boolean;
-  code?: string;
-  getnotif?: boolean;
-};
+import { Post } from '../classes/Post';
 
 type PostDetailsProps = {
   posts: Post[];
