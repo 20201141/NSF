@@ -4,10 +4,17 @@ import './App.css';
 
 import logo from './images/logo.png';
 import filter from './images/filter-32.svg';
+import PageNotFound from "./PageNotFound";
 
 import Forum from "./forum/Forum";
 import PostDetails from "./postDetails/PostDetails";
 import PostForm from "./postCreation/PostForm";
+
+import Login from "./Login";
+import UserSettings from "./account/UserSettings";
+import Settings from './account/Settings';
+import MyPosts from './account/MyPosts';
+import Personalize from './account/Personalize';
 
 type Post = {
   post_id: number;
@@ -25,6 +32,10 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // User Account
+  const [isAccount, setIsAccount] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -56,6 +67,13 @@ const App: React.FC = () => {
     post.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isLoggedIn) {
+      event.preventDefault();
+      setIsAccount(true);
+    } 
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -75,9 +93,10 @@ const App: React.FC = () => {
           </button>
         </div>
 
+        <Login isOpen={isAccount} onClose={() => setIsAccount(false)} />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
-          <Link to="/create-post" className="menu-item">Create Post</Link>
+          <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
           <Link to="/account" className="menu-item">My Account</Link>
         </div>
@@ -91,8 +110,13 @@ const App: React.FC = () => {
               </div>} />
             <Route path="/create-post" element={<PostForm />} />
             <Route path="/builder" element={<div>Builder Component</div>} />
-            <Route path="/account" element={<div>My Account Component</div>} />
+            <Route path="/account" element={<UserSettings />} >
+              <Route index element={<Settings />} />
+              <Route path="my-posts" element={<MyPosts />} />
+              <Route path="personalize" element={<Personalize />} />
+            </Route>
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
+            <Route path="*" element={<PageNotFound />} />
 
           </Routes>
         </div>

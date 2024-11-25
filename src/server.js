@@ -40,6 +40,141 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+/* User Account */
+// API Route to sign up
+app.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    // Check if the username or email already exists
+    const existingUser = await pool.query(
+      `SELECT * FROM user_account WHERE username = $1 OR email = $2`,
+      [username, email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(409).json({ message: "Username or email already exists" });
+    }
+
+    await pool.query(
+      `INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)`,
+      [username, email, password]
+    );
+    res.status(201).json({ message: "Sign up successful" });
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// API Route to login
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!password || (!username && !email)) {
+    return res.status(400).json({ message: "Username and password are required" });
+  }
+
+  try {
+    const user = await pool.query(
+      `SELECT * FROM user_account WHERE username = $1`,
+      [username]
+    );
+
+    if (user.rows.length === 0) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        username: user.rows[0].username,
+        email: user.rows[0].email,
+        isDark: user.rows[0].isdark,
+      },
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* User Settings Subpage */
+// API Route to get all posts from specific user
+app.get('/user-posts/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    // Query to retrieve posts from the "post" table
+    const result = await pool.query(`
+      SELECT post_id, title, date, post_type, isresolved, getnotif
+      FROM post, user_account
+      WHERE 
+        post.username = user_account.username
+        AND
+        post.username = $1`,
+      [username]
+    );
+
+    res.json(result.rows); 
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API Route to get the user's theme preference
+app.get('/user-theme', async (req, res) => {
+  const username = req.query.username;
+
+  if (!username) {
+    return res.status(400).json({ message: "Username is required"});
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT isDark FROM user_account WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found"});
+    }
+
+    res.json({ isDark: result.row[0].isDark });
+  } catch (error) {
+    console.error("Error fetching theme preference:", error);
+    res.status(500).json({ message: "Server error"});
+  }
+});
+
+// API Route to change user's theme preference
+app.post('/ user-theme', async (req, res) => {
+  const { username, isDark } = req.body;
+
+  if (!username || typeof isDark !== 'boolean') {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+
+  try {
+    await pool.query(
+      'UPDATE user_account SET isDark = $1 WHERE username = $2',
+      [isDark, username]
+    );
+
+    res.status(200).json({ message: "Theme preference updated" });
+  } catch (err) {
+    console.error("Error updating theme preference:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
