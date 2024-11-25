@@ -31,6 +31,8 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // User Account
   const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -68,7 +70,8 @@ const App: React.FC = () => {
     if (!isLoggedIn) {
       event.preventDefault();
       setIsAccount(true);
-    }
+      setIsLoggedIn(true);
+    } 
   };
 
   return (

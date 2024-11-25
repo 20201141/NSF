@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useUser } from "../UserInfo";
 import "./UserSettings.css";
 
 interface LoginProps {
@@ -9,6 +10,44 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!isSubmitting) return;
+
+      try {
+        const endpoint = isSignUp ? "/api/signup" : "/api/login";
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
+
+          // update global user
+          setUser({
+            username: data.username,
+            email: data.email,
+            isLoggedIn: true,
+          });
+
+          onClose();
+        } else {
+          const errData = await response.json();
+        }
+      } catch (error) {
+        console.error('Error fetching user account:', error);
+      } finally {
+        setIsSubmitting(false); // clears submitting state
+      }
+    };
+    fetchData();
+  }, [isSubmitting, formData, isSignUp, onClose]);
 
   if (!isOpen) return null;
 
@@ -19,25 +58,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    try {
-      const endpoint = isSignUp ? "/api/signup" : "/api/login";
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', },
-        body: JSON.stringify(formData), 
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(`${isSignUp ? 'Sign Up' : 'Log In'} successful`, data);
-        onClose();
-      } else {
-        console.error("Error:", await response.json());
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    setIsSubmitting(true); // trigger useEffect
   };
 
   return (
@@ -81,7 +102,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           </div>
           </form>
         </div>
-        
         <p className="or">or</p>
         <button className="toggle-button" onClick={() => setIsSignUp(!isSignUp)}>
             {isSignUp ? "Log In" : "New user? Sign Up"}
