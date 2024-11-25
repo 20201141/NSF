@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     event.preventDefault();
     
     try {
-      const endpoint = isSignUp ? "/api/signup" : "/api/login";
+      const endpoint = isSignUp ? '/api/signup' : '/api/login';
 
       console.log("Sending request to:", endpoint);
       console.log("Payload:", formData);
