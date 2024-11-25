@@ -10,44 +10,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { setUser } = useUser();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!isSubmitting) return;
-
-      try {
-        const endpoint = isSignUp ? "/api/signup" : "/api/login";
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
-
-          // update global user
-          setUser({
-            username: data.username,
-            email: data.email,
-            isLoggedIn: true,
-          });
-
-          onClose();
-        }
-      } catch (error) {
-        console.error('Error fetching user account:', error);
-      } finally {
-        setIsSubmitting(false); // clears submitting state
-      }
-    };
-    fetchData();
-  }, [isSubmitting, formData, isSignUp, setUser, onClose]);
-
-  if (!isOpen) return null;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -56,8 +19,34 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setIsSubmitting(true); // trigger useEffect
+    
+    try {
+      const endpoint = isSignUp ? "/api/signup" : "/api/login";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
+
+        // update global user
+        setUser({
+          username: data.username,
+          email: data.email,
+          isLoggedIn: true,
+        });
+
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error fetching user account:', error);
+    }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="login-overlay">
