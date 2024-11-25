@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [username, setUsername] = useState("pythonisgreat123"); // change with login implementation
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -92,7 +93,7 @@ const App: React.FC = () => {
             <Route path="/create-post" element={<PostForm />} />
             <Route path="/builder" element={<div>Builder Component</div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
-            <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
+            <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} username={username} />} />
 
           </Routes>
         </div>
