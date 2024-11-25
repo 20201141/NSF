@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useUser } from "../UserInfo";
 import "./UserSettings.css";
 
@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     event.preventDefault();
     
     try {
-      const endpoint = isSignUp ? "/api/signup" : "/api/login";
+      const endpoint = isSignUp ? "http://localhost:3000/api/signup" : "http://localhost:3000/api/login";
 
       console.log("Sending request to:", endpoint);
       console.log("Payload:", formData);
