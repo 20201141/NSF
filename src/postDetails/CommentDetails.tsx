@@ -1,4 +1,5 @@
-import { Comment } from "../classes/Comment";
+import React from 'react';
+import { Comment } from '../classes/Comment';
 import { useState } from 'react';
 
 

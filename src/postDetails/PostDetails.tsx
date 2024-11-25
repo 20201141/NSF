@@ -52,7 +52,11 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) =
       )}
       {post.getnotif && <p>Notifications: Enabled</p>}
     </div>
-    {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)}
+    {
+      comments
+        .sort((commentA, commentB) => (commentA.likes - commentB.likes))
+        .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)
+    }
   </>);
 };
 
