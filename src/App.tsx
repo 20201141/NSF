@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Post } from './classes/Post';
 import './App.css';
 
 import logo from './images/logo.png';
