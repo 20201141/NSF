@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Button from "./Button";
 import "./UserSettings.css";
 
 // Personalize Component
@@ -44,7 +43,7 @@ const Personalize: React.FC = () => {
       <h1>Personalize</h1>
       <div className="toggle">
         <p className="toggle-label">Dark Mode</p>
-        <Button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</Button>
+        <button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</button>
       </div>
     </div>
   );

@@ -95,7 +95,7 @@ const App: React.FC = () => {
           <Link to="/" className="menu-item">Home</Link>
           <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
+          <Link to="/account" className="menu-item">My Account</Link>
         </div>
 
         <div className="content">

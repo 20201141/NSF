@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "./Button";
 import "./UserSettings.css";
 
 // User Settings Component
@@ -42,8 +41,8 @@ const Settings: React.FC = () => {
           <input className="password-input" type="password" value={reenterPassword} onChange={(e) => setReenterPassword(e.target.value)} />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <div className="buttons">
-            <Button className="submit" onClick={handleSubmit}>Submit</Button>
-            <Button onClick={handleClick}>Cancel</Button>
+            <button className="submit" onClick={handleSubmit}>Submit</button>
+            <button onClick={handleClick}>Cancel</button>
           </div>
         </div>
       ) : (
@@ -51,7 +50,7 @@ const Settings: React.FC = () => {
           <p className="label">Username: {}</p>
           <p className="label">Password: {}</p>
           <p className="label">Email: {}</p> 
-          <Button onClick={handleClick}>Change Password</Button>
+          <button onClick={handleClick}>Change Password</button>
         </div>
       )} 
     </div>
