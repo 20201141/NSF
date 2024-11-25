@@ -60,11 +60,9 @@ app.post('/signup', async (req, res) => {
       return res.status(409).json({ message: "Username or email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     await pool.query(
       `INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)`,
-      [username, email, hashedPassword]
+      [username, email, password]
     );
     res.status(201).json({ message: "Sign up successful" });
   } catch (error) {
@@ -91,7 +89,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.rows[0].password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -159,7 +156,7 @@ app.get('/user-theme', async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/user-theme', async (req, res) => {
+app.post('/ user-theme', async (req, res) => {
   const { username, isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
