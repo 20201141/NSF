@@ -32,10 +32,11 @@ function daysAgo(date: Date) {
   }
 }
 
-const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = ({ commentIndex, comments }) => {
+const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[], username: string }> = ({ commentIndex, comments, username }) => {
   const comment = comments[commentIndex]; // Get the comment using the index
   const date: Date = new Date(comment.date);
-
+  const [likes, setLikes] = useState(comment.likes);
+  const [userLiked, setUserLiked] = useState(false);
 
   let [getReplies, setReplies] = useState(<></>);
   function onExpand() {
@@ -43,7 +44,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
       .map((cmnt, id) => ({ cmnt, id }))
       .filter(({cmnt}) => cmnt.parent_id === commentIndex)
       .map(({id}) => id);
-    const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} />);
+    const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} username={username} />);
     if(replies.length > 0) {
       setReplies(<div id={`comment-${commentIndex}-replies`} className="comment-replies">
         {rendered_replies}
@@ -51,11 +52,37 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     }
   }
 
+  const toggleLike = async () => {
+    try {
+      const response = await fetch(`/comments/${commentIndex}/likes`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({increment: !userLiked, username}),
+      });
+      
+      const data = await response.json();
+
+      if (response.ok) {
+        setLikes(data.likes);
+        setUserLiked(!userLiked);
+      } else {
+        console.error("Failed to update likes:", data.message);
+      }
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
+
   return <>
     <div className="comment-container">
       <div className="comment">
         <p>{comment.username} • {daysAgo(date)}</p>
         <p>{comment.content}</p>
+        <div className="likes-section">
+          <button onClick={toggleLike}>Like</button>
+        </div>
         <button className="comment-replies-expand" onClick={onExpand}>replies</button>
       </div>
       {getReplies}
