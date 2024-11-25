@@ -153,7 +153,7 @@ app.get('/user-theme', async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/ user-theme', async (req, res) => {
+app.post('/user-theme/change', async (req, res) => {
   const { username, isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
