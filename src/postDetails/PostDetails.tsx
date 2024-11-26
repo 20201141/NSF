@@ -61,8 +61,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
         )}
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
-      <form className='post-details-comment-form'>
-        <textarea name='content'></texarea>
+      <form action='/comments' className='post-details-comment-form'>
+        <textarea name='content'></textarea>
         <center><button type='submit'>Comment</button></center>
         <input name='post_id' type='number' hidden value={post.post_id} />
         {/*<input name='parent_id' type='string' hidden value={'null'} />*/}
