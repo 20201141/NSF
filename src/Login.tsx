@@ -23,7 +23,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
     try {
       const endpoint = isSignUp ? "/api/signup" : "/api/login";
 
-      console.log("Sending request to:", endpoint);
       console.log("Payload:", formData);
 
       const response = await fetch(endpoint, {
@@ -31,8 +30,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      
-      console.log("Response status:", response.status);
       
       if (response.ok) {
         const data = await response.json();

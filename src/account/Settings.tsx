@@ -23,19 +23,21 @@ const Settings: React.FC = () => {
       return;
     }
 
+    try {
+      const response = await fetch(`/api/changePassword/${newPassword}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(currentPassword),
+      });
 
-    //implement backend to fetch password from DB
-    // try {
-    //   const response = await fetch(`/api/changePassword/${newPassword}`);
-    // }
-    const response = await fetch(`/api/changePassword/${newPassword}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currentPassword),
-    });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data: ", data);
+      }
+    } catch (error) {
+      console.error('Error fetching password:', error);
+    }
     
-    
-
   };
 
   // display info
