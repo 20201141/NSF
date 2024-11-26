@@ -313,7 +313,8 @@ app.post('/comments', attachUser, async (req, res) => {
       username: comment.username,
       parent_id: comment.parent_id,
     };
-    res.status(201).json(matchType);
+    //res.status(201).json(matchType);
+    res.redirect(303, `/post/${post_id}`);
   } catch (err) {
     console.error('Error creating comment:', err);
     if (err.code == '23503') {
