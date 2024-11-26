@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './PostDetails.css';
 import CommentDetails from './CommentDetails';
@@ -34,7 +35,12 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     return <div>Post not found</div>;
   }
 
-  const comments: Comment[] = [];
+  const [comments, setComments] = useState<Comment[]>([]);
+  useEffect(() => {
+    fetch(`/comments/${post.post_id}`)
+    .then((resp) => resp.json())
+    .then(setComments);
+  }, [])
 
   return (
     <>
