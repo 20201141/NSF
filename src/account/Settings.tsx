@@ -25,7 +25,7 @@ const Settings: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/user-info`, {credentials: "include",});
+        const response = await fetch("/api/user-info", {credentials: "include",});
 
         if (response.ok) {
           const data: UserAccount = await response.json();
@@ -55,7 +55,7 @@ const Settings: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/change-password`, {
+      const response = await fetch("/api/change-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
