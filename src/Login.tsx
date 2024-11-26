@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useUser } from "./UserInfo";
 import "./account/UserSettings.css";
 
 interface LoginProps {
@@ -12,7 +11,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const { setUser } = useUser();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,6 +19,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setErrorMsg(null); //clear error msg
     
     try {
       const endpoint = isSignUp ? "/api/signup" : "/api/login";
@@ -31,6 +30,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include"
       });
       
       if (response.status === 401) {
@@ -44,14 +44,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
         console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
 
         onLoginSuccess();
-
-        // update global user
-        setUser({
-          username: data.username,
-          email: data.email,
-          isLoggedIn: true,
-        });
-
         onClose();
       }
 

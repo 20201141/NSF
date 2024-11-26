@@ -5,6 +5,10 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const bcrypt = require('bcrypt');
+
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'nsf',         // Database username
@@ -15,8 +19,35 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({credentials: true}));
 app.use(express.json());
+
+// Session config
+app.use(session ({
+  store: new pgSession({
+    pool: pool,
+    tableName: 'cookie'
+  }),
+  secret: 'nsf',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+    secure: false,  // not https
+    httpOnly: true, // client-side can't access cookie
+    sameSite: 'lax'
+  }
+}));
+
+// Attaches user from session
+const attachUser = (req, res, next) => {
+  if (req.session && req.session.user) {
+    req.user = req.session.user;
+    next();
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+};
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
@@ -60,10 +91,17 @@ app.post('/signup', async (req, res) => {
       return res.status(409).json({ message: "Username or email already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await pool.query(
       `INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)`,
-      [username, email, password]
+      [username, email, hashedPassword]
     );
+
+    req.session.user = {
+      username
+    };
+
     res.status(201).json({ message: "Sign up successful" });
   } catch (error) {
     console.error("Error during signup:", error);
@@ -75,7 +113,7 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  if (!password || (!username && !email)) {
+  if (!password || !username) {
     return res.status(400).json({ message: "Username and password are required" });
   }
 
@@ -89,9 +127,15 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Invalid username" });
     }
 
-    if (user.rows[0].password !== password) {
+    const match = await bcrypt.compare(password, user.rows[0].password);
+
+    if (!match) {
       return res.status(401).json({ message: "Wrong password" });
     }
+
+    req.session.user = {
+      username: user.rows[0].username,
+    };
 
     res.status(200).json({
       message: "Login successful",
@@ -108,10 +152,22 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// API Route to logout
+app.post('/logout', async (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      return res.status(500).json({ message: 'Could not log out. Please try again.' });
+    }
+    res.clearCookie('connect.sid');
+    res.status(200).json({ message: 'Logout successful'});
+  });
+});
+
 /* User Settings Subpage */
 // API Route to get all posts from specific user
-app.get('/user-posts/:username', async (req, res) => {
-  const { username } = req.params;
+app.get('/user-posts/:username', attachUser, async (req, res) => {
+  const { username } = req.user;
 
   try {
     // Query to retrieve posts from the "post" table
@@ -133,8 +189,8 @@ app.get('/user-posts/:username', async (req, res) => {
 });
 
 // API Route to get the user's theme preference
-app.get('/user-theme', async (req, res) => {
-  const username = req.query.username;
+app.get('/user-theme', attachUser, async (req, res) => {
+  const username = req.user;
 
   if (!username) {
     return res.status(400).json({ message: "Username is required"});
