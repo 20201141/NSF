@@ -51,17 +51,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) =
             <span key={index} className="tag">{tag.trim()}</span>
           ))}
         </div>
-<<<<<<< HEAD
-      )}
-      {post.getnotif && <p>Notifications: Enabled</p>}
-    </div>
-    {
-      comments
-        .sort((commentA, commentB) => (commentA.likes - commentB.likes))
-        .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)
-    }
-  </>);
-=======
         
         {post.isresolved && <p>Status: Resolved</p>}
         {post.code && (
@@ -73,10 +62,13 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) =
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
 
-      {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} />)}
+      {
+        comments
+          .sort((commentA, commentB) => (commentA.likes - commentB.likes))
+          .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)
+      }
     </>
   );
->>>>>>> 800d02be0a80700f3753395589c93351eb4448b6
 };
 
 export default PostDetails;
