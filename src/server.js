@@ -292,6 +292,9 @@ app.post('/comments', attachUser, async (req, res) => {
   const username = req.user;
   const { post_id, parent_id, content } = req.body;
 
+  console.log(req.body);
+  console.log(req.user);
+
   if (!post_id || !username || !content ) {
     return res.status(400).json({ message: 'post_id, username, and content are required!'})
   }
@@ -307,7 +310,7 @@ app.post('/comments', attachUser, async (req, res) => {
     // make it comment type
     const comment = result.rows[0];
     const matchType = {
-      content: comment.post-content,
+      content: comment.content,
       date: comment.date,
       likes: comment.likes,
       username: comment.username,
