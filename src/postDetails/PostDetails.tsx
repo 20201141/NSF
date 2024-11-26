@@ -13,7 +13,7 @@ type PostDetailsProps = {
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
-  const [activator, activate] = useState(false);
+  /*const [activator, activate] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
       }
     };
     getComments();
-  }, [activate])
+  }, [activator])*/
 
 
   console.log("Loading:", loading);
@@ -52,7 +52,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     return <div>Post not found</div>;
   }
 
-  activate(true); // hack
+  // activate(true); // hack
 
   return (
     <>
