@@ -13,7 +13,7 @@ const Settings: React.FC = () => {
     isDark: false,
   });
   const [showChangePassword, setShowChangePassword] = useState(false);
-  const [formData, setFormData] = useState({currPassword: '', newPass: '', reEnter: '',});
+  const [formData, setFormData] = useState({currPass: '', newPass: '', reEnter: '',});
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,9 +81,9 @@ const Settings: React.FC = () => {
       { showChangePassword ? (
         <div className="password-content">
           <p className="label">Enter current password: </p>
-          <input className="password-input" type="password" name="currPassword" value={formData.currPassword} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="currPass" value={formData.currPass} onChange={handleInputChange} required />
           <p className="label">Enter new password: </p> 
-          <input className="password-input" type="password" name="newPassword" value={formData.newPass} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="newPass" value={formData.newPass} onChange={handleInputChange} required />
           <p className="label">Re-enter password: </p>
           <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={handleInputChange} required />
           {errorMessage && <p className="error">{errorMessage}</p>}
