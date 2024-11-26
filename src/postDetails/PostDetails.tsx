@@ -13,8 +13,8 @@ type PostDetailsProps = {
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
-  const [comments, setComments] = useState<Comment[]>([]);
   /*const [activator, activate] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     async function getComments() {
@@ -28,7 +28,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     };
     getComments();
   }, [activator])*/
-  setComments(postId === "1" ? [{
+  const comments = (postId === "1" ? [{
      content: "yessir",
      date: "11/26/24",
      likes: 1,
