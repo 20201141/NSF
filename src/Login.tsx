@@ -10,6 +10,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { setUser } = useUser();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +32,12 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
         body: JSON.stringify(formData),
       });
       
+      if (response.status === 401) {
+        const errorData = await response.json();
+        setErrorMsg(errorData.message);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
@@ -44,8 +51,10 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
         onClose();
       }
+
     } catch (error) {
-      console.error('Error fetching user account:', error);
+      console.error("Error fetching user account:", error);
+      setErrorMsg("Failed to connect to the server. Please try again later.")
     }
   };
 
@@ -56,6 +65,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       <div className="login-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
         <div className="login-group">
           <form onSubmit={handleSubmit}>
             <input 
