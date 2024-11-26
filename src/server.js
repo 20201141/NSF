@@ -183,7 +183,7 @@ app.get('/user-info', attachUser, async (req, res) => {
 
     const userInfo = result.rows[0];
 
-    res.status(200).json(resut.rows);
+    res.status(200).json(result.rows);
   } catch (err) {
     console.error('Error fetching user info:', err);
     res.status(500).json({ message: 'Server error' });
@@ -262,7 +262,7 @@ app.get('/user-theme', attachUser, async (req, res) => {
       [username]
     );
 
-    res.status(200).json({ isDark: result.rows[0].isDark });
+    res.status(200).json({ isDark: result.row[0].isDark });
   } catch (error) {
     console.error("Error fetching theme preference:", error);
     res.status(500).json({ message: "Server error"});
