@@ -1,14 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UserSettings.css";
+import { UserAccount } from "../classes/UserAccount";
 
 // User Settings Component
 const Settings: React.FC = () => {
   // change password feature
+  const [user, setUser] = useState<UserAccount>({
+    user_id: 0,
+    username: "",
+    password: "",
+    email: "",
+    isDark: false,
+  });
   const [showChangePassword, setShowChangePassword] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [reenterPassword, setReenterPassword] = useState("");
+  const [formData, setFormData] = useState({currPass: '', newPass: '', reEnter: '',});
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
+
+  // get user's info from DB
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/user-info", {credentials: "include",});
+
+        if (response.ok) {
+          const data: UserAccount = await response.json();
+          console.log("data:", data);
+          setUser(data);
+        } else {
+          setErrorMessage("Failed to get user's info");
+        }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
+    };
+    fetchUser();
+  }, []);
+
 
   // changes content for password change input
   const handleClick = () => {
@@ -18,13 +50,28 @@ const Settings: React.FC = () => {
 
   // verifies password is the same when re-entering
   const handleSubmit = async () => {
-    if (newPassword !== reenterPassword) {
+    if (formData.newPass !== formData.reEnter) {
       setErrorMessage("Passwords do not match!");
       return;
     }
 
-    //implement backend to fetch password from DB
+    try {
+      const response = await fetch("/api/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        credentials: "include"
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        console.log("user info: ", data);
+        setShowChangePassword(!showChangePassword);
+      }
+    } catch (error) {
+      console.error('Error fetching password:', error);
+    }
+    
   };
 
   // display info
@@ -34,11 +81,11 @@ const Settings: React.FC = () => {
       { showChangePassword ? (
         <div className="password-content">
           <p className="label">Enter current password: </p>
-          <input className="password-input" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+          <input className="password-input" type="password" name="currPass" value={formData.currPass} onChange={handleInputChange} required />
           <p className="label">Enter new password: </p> 
-          <input className="password-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+          <input className="password-input" type="password" name="newPass" value={formData.newPass} onChange={handleInputChange} required />
           <p className="label">Re-enter password: </p>
-          <input className="password-input" type="password" value={reenterPassword} onChange={(e) => setReenterPassword(e.target.value)} />
+          <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={handleInputChange} required />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <div className="buttons">
             <button className="submit" onClick={handleSubmit}>Submit</button>
@@ -47,9 +94,8 @@ const Settings: React.FC = () => {
         </div>
       ) : (
         <div>
-          <p className="label">Username: {}</p>
-          <p className="label">Password: {}</p>
-          <p className="label">Email: {}</p> 
+          <p className="label">Username: {user.username}</p>
+          <p className="label">Email: {user.email}</p> 
           <button onClick={handleClick}>Change Password</button>
         </div>
       )} 

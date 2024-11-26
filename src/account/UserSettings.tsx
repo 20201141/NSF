@@ -1,7 +1,8 @@
+import React from "react";
 import { NavLink, Outlet } from 'react-router-dom';
-import './UserSettings.css';
+import './UserSettings.css'; 
 
-const UserSettings = () => {
+const UserSettings: React.FC = () => {
   return (
     <div className="user-nav">
       <nav>

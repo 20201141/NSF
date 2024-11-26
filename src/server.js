@@ -5,6 +5,10 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const bcrypt = require('bcrypt');
+
 // PostgreSQL connection setup
 const pool = new Pool({
   user: 'nsf',         // Database username
@@ -15,8 +19,35 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({credentials: true}));
 app.use(express.json());
+
+// Session config
+app.use(session ({
+  store: new pgSession({
+    pool: pool,
+    tableName: 'cookie'
+  }),
+  secret: 'nsf',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+    secure: false,  // not https
+    httpOnly: true, // client-side can't access cookie
+    sameSite: 'lax'
+  }
+}));
+
+// Attaches user from session
+const attachUser = (req, res, next) => {
+  if (req.session && req.session.user) {
+    req.user = req.session.user;
+    next();
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+};
 
 // Basic test route to ensure the server is running
 app.get('/', (req, res) => {
@@ -28,10 +59,9 @@ app.get('/posts', async (req, res) => {
   try {
     // Query to retrieve posts from the "post" table
     const result = await pool.query(`
-      SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif
+      SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif, tags
       FROM post
     `);
-
     // Return the rows directly as an array
     res.json(result.rows);  // Make sure this returns an array directly
   } catch (err) {
@@ -60,10 +90,17 @@ app.post('/signup', async (req, res) => {
       return res.status(409).json({ message: "Username or email already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await pool.query(
       `INSERT INTO user_account (username, email, password) VALUES ($1, $2, $3)`,
-      [username, email, password]
+      [username, email, hashedPassword]
     );
+
+    req.session.user = {
+      username
+    };
+
     res.status(201).json({ message: "Sign up successful" });
   } catch (error) {
     console.error("Error during signup:", error);
@@ -75,7 +112,7 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  if (!password || (!username && !email)) {
+  if (!password || !username) {
     return res.status(400).json({ message: "Username and password are required" });
   }
 
@@ -86,15 +123,25 @@ app.post('/login', async (req, res) => {
     );
 
     if (user.rows.length === 0) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: "Invalid username" });
     }
+
+    const match = await bcrypt.compare(password, user.rows[0].password);
+
+    if (!match) {
+      return res.status(401).json({ message: "Wrong password" });
+    }
+
+    req.session.user = {
+      username: user.rows[0].username,
+    };
 
     res.status(200).json({
       message: "Login successful",
       user: {
         username: user.rows[0].username,
         email: user.rows[0].email,
-        isDark: user.rows[0].isdark,
+        password: user.rows[0].password,
       },
     });
   } catch (error) {
@@ -103,13 +150,87 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// API Route to logout
+app.post('/logout', async (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      return res.status(500).json({ message: 'Could not log out. Please try again.' });
+    }
+    res.clearCookie('connect.sid');
+    res.status(200).json({ message: 'Logout successful'});
+  });
+});
+
 /* User Settings Subpage */
-// API Route to get all posts from specific user
-app.get('/user-posts/:username', async (req, res) => {
-  const { username } = req.params;
+// API Route to get the user's info
+app.get('/user-info', attachUser, async (req, res) => {
+  const { username } = req.user;
 
   try {
-    // Query to retrieve posts from the "post" table
+    const result = await pool.query(`
+      SELECT username, password, email
+      FROM user_account
+      WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching user info:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API Route to change the user's password
+app.post('/change-password', attachUser, async (req, res) => {
+  const { username } = req.user;
+  const { currPass, newPass, reEnter } = req.body;
+
+  if (!currPass || !newPass || !reEnter) {
+    return res.status(400).json({ message: "Both current and new passwords are required" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT password FROM user_account WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const storedPasswordHash = result.rows[0].password;
+    const match = await bcrypt.compare(currPass, storedPasswordHash);
+
+    if (!match) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPass, 10);
+
+    await pool.query(
+      `UPDATE user_account SET password = $1 WHERE username = $2`,
+      [newHashedPassword, username]
+    );
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// API Route to get all posts from specific user
+app.get('/user-posts', attachUser, async (req, res) => {
+  const { username } = req.user;
+
+  try {
     const result = await pool.query(`
       SELECT post_id, title, date, post_type, isresolved, getnotif
       FROM post, user_account
@@ -120,7 +241,7 @@ app.get('/user-posts/:username', async (req, res) => {
       [username]
     );
 
-    res.json(result.rows); 
+    res.status(200).json(result.rows); 
   } catch (err) {
     console.error('Error fetching posts:', err);
     res.status(500).json({ message: 'Server error' });
@@ -128,12 +249,8 @@ app.get('/user-posts/:username', async (req, res) => {
 });
 
 // API Route to get the user's theme preference
-app.get('/user-theme', async (req, res) => {
-  const username = req.query.username;
-
-  if (!username) {
-    return res.status(400).json({ message: "Username is required"});
-  }
+app.get('/user-theme', attachUser, async (req, res) => {
+  const username = req.user;
 
   try {
     const result = await pool.query(
@@ -141,11 +258,7 @@ app.get('/user-theme', async (req, res) => {
       [username]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "User not found"});
-    }
-
-    res.json({ isDark: result.row[0].isDark });
+    res.status(200).json({ isDark: result });
   } catch (error) {
     console.error("Error fetching theme preference:", error);
     res.status(500).json({ message: "Server error"});
@@ -153,8 +266,9 @@ app.get('/user-theme', async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/user-theme/change', async (req, res) => {
-  const { username, isDark } = req.body;
+app.post('/user-theme-change', attachUser, async (req, res) => {
+  const username = req.user;
+  const { isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
     return res.status(400).json({ message: "Invalid input" });
