@@ -190,9 +190,9 @@ app.get('/user-info', attachUser, async (req, res) => {
 // API Route to change the user's password
 app.post('/change-password', attachUser, async (req, res) => {
   const { username } = req.user;
-  const { currentPassword, newPassword } = req.body;
+  const { currPass, newPass, reEnter } = req.body;
 
-  if (!currentPassword || !newPassword) {
+  if (!currPass || !newPass || !reEnter) {
     return res.status(400).json({ message: "Both current and new passwords are required" });
   }
 
@@ -207,13 +207,13 @@ app.post('/change-password', attachUser, async (req, res) => {
     }
 
     const storedPasswordHash = result.rows[0].password;
-    const match = await bcrypt.compare(currentPassword, storedPasswordHash);
+    const match = await bcrypt.compare(currPass, storedPasswordHash);
 
     if (!match) {
       return res.status(401).json({ message: "Current password is incorrect" });
     }
 
-    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    const newHashedPassword = await bcrypt.hash(newPass, 10);
 
     await pool.query(
       `UPDATE user_account SET password = $1 WHERE username = $2`,
