@@ -21,7 +21,6 @@ const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [username, setUsername] = useState("pythonisgreat123"); // change with login implementation
 
   // User Account
   const [isAccount, setIsAccount] = useState(false);

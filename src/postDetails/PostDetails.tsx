@@ -11,7 +11,7 @@ type PostDetailsProps = {
   username: string;
 };
 
-const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) => {
+const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
 
   console.log("Loading:", loading);
@@ -69,7 +69,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) =
       {
         comments
           .sort((commentA, commentB) => (commentA.likes - commentB.likes))
-          .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} username={username}/>)
+          .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
       }
     </>
   );
