@@ -36,23 +36,34 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
 
   const comments: Comment[] = [];
 
-  return (<>
-    <div className="post-details">
-      <p>{post.username} • {new Date(post.date).toLocaleString()}</p>
-      <p>Category: {post.post_type}</p>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-      {post.isresolved && <p>Status: Resolved</p>}
-      {post.code && (
-        <div>
-          <h3>Code:</h3>
-          <pre>{post.code}</pre>
+  return (
+    <>
+      <div className="post-details">
+        <p>{post.username} • {new Date(post.date).toLocaleString()}</p>
+        <p>Category: {post.post_type}</p>
+        <h1>{post.title}</h1>
+        <p>{post.content}</p>
+
+        {/* Tags */}
+        <div className="tags">
+          {post.tags && post.tags.split(',').map((tag, index) => (
+            <span key={index} className="tag">{tag.trim()}</span>
+          ))}
         </div>
-      )}
-      {post.getnotif && <p>Notifications: Enabled</p>}
-    </div>
-    {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)}
-  </>);
+        
+        {post.isresolved && <p>Status: Resolved</p>}
+        {post.code && (
+          <div>
+            <h3>Code:</h3>
+            <pre>{post.code}</pre>
+          </div>
+        )}
+        {post.getnotif && <p>Notifications: Enabled</p>}
+      </div>
+
+      {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} />)}
+    </>
+  );
 };
 
 export default PostDetails;

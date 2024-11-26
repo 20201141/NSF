@@ -17,8 +17,6 @@ import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
 import Personalize from './account/Personalize';
 
-
-
 const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);

@@ -59,10 +59,9 @@ app.get('/posts', async (req, res) => {
   try {
     // Query to retrieve posts from the "post" table
     const result = await pool.query(`
-      SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif
+      SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif, tags
       FROM post
     `);
-
     // Return the rows directly as an array
     res.json(result.rows);  // Make sure this returns an array directly
   } catch (err) {
