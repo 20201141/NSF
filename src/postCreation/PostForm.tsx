@@ -2,9 +2,29 @@ import React from 'react';
 import { useState } from 'react';
 import './PostForm.css';
 
+const PostTypeChoice: React.FC<{
+  for:string, value:string // args
+  state:[string, React.Dispatch<React.SetStateAction<string>>]
+}> = (props) => {
+  const [selected_post_type,selectType] = props.state;
+  function is_selected(target_value: string) {
+    return target_value == selected_post_type;
+  }
+  return <>
+    <input type='radio' checked={is_selected(props.value)}
+      id={props.for+'-type'} name='post_type' value={props.value} />
+    <label 
+      htmlFor={props.for+'-type'} 
+      onClick={() => selectType(props.value)}
+      className='post-form-type'>
+      {props.for}
+    </label>
+  </>;
+}
+
 const PostForm: React.FC = () => {
-  // deno-lint-ignore prefer-const
-  let [openPopup, setPopup] = useState(false);
+  const [openPopup, setPopup] = useState(false);
+  const post_type_state = useState('Question');
   return (
     <form className="post-form">
       <h1>Create Post</h1>
@@ -14,14 +34,8 @@ const PostForm: React.FC = () => {
         <span className='post-form-tags-btn' onClick={() => setPopup(!openPopup)}>Tags</span>
         <div className={'post-form-tags'+(openPopup?'':' dont-display')}>
           Type:&nbsp;
-          <label htmlFor='q-type'>
-            <input type='radio' id='q-type' name='post_type' value='Question' />
-            Question
-          </label>
-          <label htmlFor='d-type'>
-            <input type='radio' id='d-type' name='post_type' value='Discussion' />
-            Discussion
-          </label>
+          <PostTypeChoice for='Question' value='question' state={post_type_state}/>
+          <PostTypeChoice for='Discussion' value='discussion' state={post_type_state}/>
           <br/>
           Tags:&nbsp;
           <label><input name='tags' type='checkbox' value='c' />C</label>
