@@ -37,9 +37,11 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
 
   const [comments, setComments] = useState<Comment[]>([]);
   useEffect(() => {
-    fetch(`/comments/${post.post_id}`)
-    .then((resp) => resp.json())
-    .then(setComments);
+    (async function() {
+      const resp = await fetch(`/comments/${post.post_id}`);
+      const data = await resp.json();
+      setComments(data);
+    })();
   }, [])
 
   return (
