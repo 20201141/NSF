@@ -183,14 +183,7 @@ app.get('/user-info', attachUser, async (req, res) => {
 
     const userInfo = result.rows[0];
 
-    res.status(200).json({
-      message: 'User info retrieved successfully',
-      user: {
-        username: result.rows[0].username,
-        email: result.rows[0].email,
-        password: result.rows[0].password,
-      }
-    });
+    res.status(200).json(resut.rows);
   } catch (err) {
     console.error('Error fetching user info:', err);
     res.status(500).json({ message: 'Server error' });
