@@ -263,21 +263,13 @@ app.get('/user-posts', attachUser, async (req, res) => {
 app.get('/user-theme', attachUser, async (req, res) => {
   const username = req.user;
 
-  if (!username) {
-    return res.status(400).json({ message: "Username is required"});
-  }
-
   try {
     const result = await pool.query(
       `SELECT isDark FROM user_account WHERE username = $1`,
       [username]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "User not found"});
-    }
-
-    res.json({ isDark: result.row[0].isDark });
+    res.status(200).json({ isDark: result.rows[0].isDark });
   } catch (error) {
     console.error("Error fetching theme preference:", error);
     res.status(500).json({ message: "Server error"});
@@ -285,7 +277,7 @@ app.get('/user-theme', attachUser, async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/ user-theme', async (req, res) => {
+app.post('/user-theme-change', async (req, res) => {
   const { username, isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
