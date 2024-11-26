@@ -26,6 +26,10 @@
     border-radius:0.3em;
     background:lightgray;
     color:black;
+    margin-left: 6em;
+    margin-top: 1em;
+    width: 57em;
+    height: 11em;
 }
 .post-details-comment-form button {
     border:none;
@@ -34,10 +38,3 @@
     font-weight: bold;
     color: white;
 }
-
-.post-content {
-    margin-left: 6em;
-    margin-top: 1em;
-    width: 57em;
-    height: 11em;
-  }
