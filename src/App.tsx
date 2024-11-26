@@ -86,7 +86,14 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <Login isOpen={isAccount} onClose={() => setIsAccount(false)} />
+        <Login 
+          isOpen={isAccount} 
+          onClose={() => setIsAccount(false)} 
+          onLoginSuccess={() => {
+            setIsLoggedIn(true); 
+            setIsAccount(false);
+          }} 
+        />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
           <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>

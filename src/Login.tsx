@@ -5,9 +5,10 @@ import "./account/UserSettings.css";
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoginSuccess: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
+const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -41,6 +42,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
+
+        onLoginSuccess();
 
         // update global user
         setUser({
