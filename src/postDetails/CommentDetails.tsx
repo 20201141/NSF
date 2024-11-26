@@ -33,7 +33,7 @@ function daysAgo(date: Date) {
   }
 }
 
-const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[], username: string }> = ({ commentIndex, comments, username }) => {
+const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = ({ commentIndex, comments }) => {
   const comment = comments[commentIndex]; // Get the comment using the index
   const date: Date = new Date(comment.date);
   const [likes, setLikes] = useState(comment.likes);
@@ -45,7 +45,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[], user
       .map((cmnt, id) => ({ cmnt, id }))
       .filter(({cmnt}) => cmnt.parent_id === commentIndex)
       .map(({id}) => id);
-    const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} username={username} />);
+    const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} />);
     if(replies.length > 0) {
       setReplies(<div id={`comment-${commentIndex}-replies`} className="comment-replies">
         {rendered_replies}
@@ -60,7 +60,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[], user
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({increment: !userLiked, username}),
+        body: JSON.stringify({increment: !userLiked}),
       });
       
       const data = await response.json();

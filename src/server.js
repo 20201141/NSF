@@ -288,8 +288,9 @@ app.post('/user-theme-change', attachUser, async (req, res) => {
 });
 
 // API Route to create a comment; returns comment type
-app.post('/comments', async (req, res) => {
-  const { post_id, username, parent_id, content } = req.body;
+app.post('/comments', attachUser, async (req, res) => {
+  const username = req.user;
+  const { post_id, parent_id, content } = req.body;
 
   if (!post_id || !username || !content ) {
     return res.status(400).json({ message: 'post_id, username, and content are required!'})
@@ -351,10 +352,10 @@ app.get('/comments/:postId', async (req, res) => {
 
 //API Route to update the comment's likes
 // API Route to update the comment's likes
-app.patch('/comments/:commentId/likes', async (req, res) => {
+app.patch('/comments/:commentId/likes', attachUser, async (req, res) => {
   const { commentId } = req.params;
   const { increment } = req.body; // should be true or false
-  const { username, increment } = req.body; // increment should be true or false
+  const username = req.user;
   try {
     const query = `UPDATE comment SET likes = likes + $1 WHERE comment_id = $2 RETURNING likes`;
     const value = increment ? 1 : -1;
@@ -385,22 +386,17 @@ app.patch('/comments/:commentId/likes', async (req, res) => {
         `DELETE FROM likes WHERE comment_id = $1 AND username = $2`,
         [commentId, username]
       );
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'Comment not found'});
       const result = await pool.query(
         `UPDATE comment SET likes = likes - 1 WHERE comment_id = $1 RETURNING likes`,
         [commentId]
       );
       return res.status(200).json({ likes: result.rows[0].likes});
     }
-    res.status(200).json({ likes: result.rows[0].likes});
   } catch (err) {
     console.error('Error updating likes:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 // Start the server
 app.listen(PORT, () => {
