@@ -4,20 +4,15 @@ import { Post } from "../classes/Post";
 import "../forum/Forum.css";
 import "./UserSettings.css";
 
-const getLoggedInUsername = (): string => {
-  return 'pythonisgreat123';
-}
-
 // My Posts Component
 const MyPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const username = getLoggedInUsername();
   
   // get user's posts from DB
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`/api/user-posts/${username}`);
+        const response = await fetch("/api/user-posts");
         const data = await response.json();
 
         if (Array.isArray(data)) {
@@ -30,7 +25,7 @@ const MyPosts: React.FC = () => {
       }
     };
     fetchPosts();
-  }, [username]);
+  }, []);
 
   // display posts
   return (

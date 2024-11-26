@@ -238,11 +238,10 @@ app.post('/change-password', attachUser, async (req, res) => {
 });
 
 // API Route to get all posts from specific user
-app.get('/user-posts/:username', attachUser, async (req, res) => {
+app.get('/user-posts', attachUser, async (req, res) => {
   const { username } = req.user;
 
   try {
-    // Query to retrieve posts from the "post" table
     const result = await pool.query(`
       SELECT post_id, title, date, post_type, isresolved, getnotif
       FROM post, user_account
