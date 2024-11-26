@@ -277,8 +277,9 @@ app.get('/user-theme', attachUser, async (req, res) => {
 });
 
 // API Route to change user's theme preference
-app.post('/user-theme-change', async (req, res) => {
-  const { username, isDark } = req.body;
+app.post('/user-theme-change', attachUser, async (req, res) => {
+  const username = req.user;
+  const { isDark } = req.body;
 
   if (!username || typeof isDark !== 'boolean') {
     return res.status(400).json({ message: "Invalid input" });
