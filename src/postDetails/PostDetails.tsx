@@ -13,6 +13,21 @@ type PostDetailsProps = {
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  useEffect(() => {
+    async function getComments() {
+      try {
+        const resp = await fetch(`/comments/${postId}`);
+        const data = await resp.json();
+        setComments(data);
+      } catch(err) {
+        setComments([]);
+      }
+    };
+    getComments();
+  }, [])
+
 
   console.log("Loading:", loading);
   console.log("Posts:", posts);
@@ -31,18 +46,10 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const post = posts.find((p) => p.post_id === parseInt(postId || "0", 10));
   console.log("Matched Post:", post);
 
+
   if (!post) {
     return <div>Post not found</div>;
   }
-
-  const [comments, setComments] = useState<Comment[]>([]);
-  useEffect(() => {
-    (async function() {
-      const resp = await fetch(`/comments/${post.post_id}`);
-      const data = await resp.json();
-      setComments(data);
-    })();
-  }, [])
 
   return (
     <>
