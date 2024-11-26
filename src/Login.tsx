@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useUser } from "./UserInfo";
 import "./account/UserSettings.css";
 
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoginSuccess: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
+const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({username: '', password: '', email: '',});
-  const { setUser } = useUser();
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -19,36 +19,37 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setErrorMsg(null); //clear error msg
     
     try {
       const endpoint = isSignUp ? "/api/signup" : "/api/login";
 
-      console.log("Sending request to:", endpoint);
       console.log("Payload:", formData);
 
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include"
       });
       
-      console.log("Response status:", response.status);
-      
+      if (response.status === 401) {
+        const errorData = await response.json();
+        setErrorMsg(errorData.message);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
 
-        // update global user
-        setUser({
-          username: data.username,
-          email: data.email,
-          isLoggedIn: true,
-        });
-
+        onLoginSuccess();
         onClose();
       }
+
     } catch (error) {
-      console.error('Error fetching user account:', error);
+      console.error("Error fetching user account:", error);
+      setErrorMsg("Failed to connect to the server. Please try again later.")
     }
   };
 
@@ -59,6 +60,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       <div className="login-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
         <div className="login-group">
           <form onSubmit={handleSubmit}>
             <input 

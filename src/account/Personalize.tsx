@@ -23,7 +23,7 @@ const Personalize: React.FC = () => {
     const newMode = !isDark;
 
     try {
-      await fetch('/api/user-theme', {
+      await fetch('/api/user-theme-change', {
         method: "POST",
         headers: {"Content-Type": "application/json", },
         body: JSON.stringify({ isDark: newMode }),

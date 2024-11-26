@@ -8,4 +8,5 @@ export type Post = {
   isresolved: boolean;
   code: string;
   getnotif: boolean;
+  tags: string;
 };
