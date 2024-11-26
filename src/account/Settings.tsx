@@ -95,7 +95,6 @@ const Settings: React.FC = () => {
       ) : (
         <div>
           <p className="label">Username: {user.username}</p>
-          <p className="label">Password: {user.password}</p>
           <p className="label">Email: {user.email}</p> 
           <button onClick={handleClick}>Change Password</button>
         </div>

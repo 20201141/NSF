@@ -143,7 +143,6 @@ app.post('/login', async (req, res) => {
         username: user.rows[0].username,
         email: user.rows[0].email,
         password: user.rows[0].password,
-        isDark: user.rows[0].isdark,
       },
     });
   } catch (error) {
@@ -181,7 +180,7 @@ app.get('/user-info', attachUser, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json(result.rows);
+    res.status(200).json(result.rows[0]);
   } catch (err) {
     console.error('Error fetching user info:', err);
     res.status(500).json({ message: 'Server error' });
