@@ -165,6 +165,74 @@ app.post('/logout', async (req, res) => {
 });
 
 /* User Settings Subpage */
+// API Route to get the user's info
+app.get('/user-info', attachUser, async (req, res) => {
+  const { username } = req.user;
+
+  try {
+    const result = await pool.query(`
+      SELECT username, password, email
+      FROM user_account
+      WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const userInfo = result.rows[0];
+
+    res.status(200).json({
+      message: 'User info retrieved successfully',
+      user: userInfo,
+    });
+  } catch (err) {
+    console.error('Error fetching user info:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API Route to change the user's password
+app.post('/change-password', attachUser, async (req, res) => {
+  const { username } = req.user;
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: "Both current and new passwords are required" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT password FROM user_account WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const storedPasswordHash = result.rows[0].password;
+    const match = await bcrypt.compare(currentPassword, storedPasswordHash);
+
+    if (!match) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `UPDATE user_account SET password = $1 WHERE username = $2`,
+      [newHashedPassword, username]
+    );
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // API Route to get all posts from specific user
 app.get('/user-posts/:username', attachUser, async (req, res) => {
   const { username } = req.user;
