@@ -62,7 +62,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
       </div>
       <form action='/comments' className='post-details-comment-form'>
         <textarea name='content'></textarea>
-        <center><button type='submit'>Comment</button></center>
+        <div className='post-content-btn'>
+          <button type='submit' className='comment-submit-btn'>Comment</button>
+        </div>
         <input name='post_id' type='number' hidden value={post.post_id} />
         {/*<input name='parent_id' type='string' hidden value={'null'} />*/}
       </form>
