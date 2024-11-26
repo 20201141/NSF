@@ -76,16 +76,34 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[], user
     }
   };
 
+  const [replyMakerInput, setReplyMakerInput] = useState(<></>);
+  let isReplying = false;
+  function makeReply() {
+    isReplying = !isReplying;
+    if(isReplying) {
+      setReplyMakerInput(<form>
+        <textarea className='comment-reply-form-input' placeholder='Comment here...'></textarea>
+        <button type='submit' >Comment</button>
+      </form>);
+    }
+  }
+
   return <>
     <div className="comment-container">
       <div className="comment">
-        <p>{comment.username} • {daysAgo(date)}</p>
+        <p className='comment-meta'>
+          <span>{comment.username} • {daysAgo(date)}</span>
+          <button className='comment-reply-button' onClick={makeReply}>Reply</button>
+        </p>
         <p>{comment.content}</p>
-        <div className="likes-section">
-          <button onClick={toggleLike}>Like</button>
-        </div>
-        <button className="comment-replies-expand" onClick={onExpand}>replies</button>
+        <p className='comment-meta'>
+          <span className="likes-section">
+            <button onClick={toggleLike}>Like</button> ({likes} {likes !== 1 ? 'likes' : 'like'})
+          </span>
+          <button className="comment-replies-expand" onClick={onExpand}>Show Replies</button>
+        </p>
       </div>
+      {replyMakerInput}
       {getReplies}
     </div>
   </>;
