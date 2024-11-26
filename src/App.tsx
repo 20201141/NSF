@@ -29,9 +29,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/posts');
+        const API_URL = process.env.REACT_APP_API_URL || '';
+        const response = await fetch(`${API_URL}/posts`); 
         const data = await response.json();
-
+        console.log("Fetched Posts:", data);
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
@@ -45,7 +46,7 @@ const App: React.FC = () => {
       }
     };
     fetchPosts();
-  }, []);
+  }, []);  
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

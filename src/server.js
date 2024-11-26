@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
 // PostgreSQL connection setup
 const pool = new Pool({
@@ -31,6 +31,7 @@ app.get('/posts', async (req, res) => {
       SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif, tags
       FROM post
     `);
+    
     // Return the rows directly as an array
     res.json(result.rows);  // Make sure this returns an array directly
   } catch (err) {
