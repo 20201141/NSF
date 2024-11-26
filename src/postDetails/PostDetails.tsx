@@ -61,7 +61,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
       <form action='/comments' className='post-details-comment-form'>
-        <textarea name='content'></textarea>
+        <textarea name='post-content'></textarea>
         <div className='post-content-btn'>
           <button type='submit' className='comment-submit-btn'>Comment</button>
         </div>
