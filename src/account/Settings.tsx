@@ -29,6 +29,7 @@ const Settings: React.FC = () => {
 
         if (response.ok) {
           const data: UserAccount = await response.json();
+          console.log("data:", data);
           setUser(data);
         } else {
           setErrorMessage("Failed to get user's info");
