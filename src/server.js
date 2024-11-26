@@ -307,7 +307,7 @@ app.post('/comments', attachUser, async (req, res) => {
     // make it comment type
     const comment = result.rows[0];
     const matchType = {
-      content: comment.content,
+      content: comment.post-content,
       date: comment.date,
       likes: comment.likes,
       username: comment.username,
