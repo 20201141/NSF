@@ -185,7 +185,11 @@ app.get('/user-info', attachUser, async (req, res) => {
 
     res.status(200).json({
       message: 'User info retrieved successfully',
-      user: userInfo,
+      user: {
+        username: result.rows[0].username,
+        email: result.rows[0].email,
+        password: result.rows[0].password,
+      }
     });
   } catch (err) {
     console.error('Error fetching user info:', err);
@@ -249,7 +253,7 @@ app.get('/user-posts/:username', attachUser, async (req, res) => {
       [username]
     );
 
-    res.json(result.rows); 
+    res.status(200).json(result.rows); 
   } catch (err) {
     console.error('Error fetching posts:', err);
     res.status(500).json({ message: 'Server error' });
