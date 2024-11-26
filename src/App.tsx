@@ -5,10 +5,11 @@ import './App.css';
 import logo from './images/logo.png';
 import filter from './images/filter-32.svg';
 
-import Forum from "./forum/Forum";
-import PostDetails from "./postDetails/PostDetails"
+import Forum from './forum/Forum';
+import Builder from './builder/Builder'
+import PostDetails from './postDetails/PostDetails';
 
-import { Post } from "./classes/Post";
+import { Post } from './classes/Post';
 
 
 const App: React.FC = () => {
@@ -126,7 +127,10 @@ const App: React.FC = () => {
                 <Forum posts={posts_} />
               </div>} />
             <Route path="/create-post" element={<div>Create Post Component</div>} />
-            <Route path="/builder" element={<div>Builder Component</div>} />
+            <Route path="/builder" element={
+              <div>
+                <Builder />
+              </div>} />
             <Route path="/account" element={<div>My Account Component</div>} />
             <Route path="/post/:postId" element={<PostDetails posts={posts} />} />
           </Routes>
