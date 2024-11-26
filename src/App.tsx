@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import { Post } from './classes/Post';
+import { Post } from './classes/Post'
 import './App.css';
 
 import logo from './images/logo.png';
@@ -60,7 +60,9 @@ const App: React.FC = () => {
     if (!isLoggedIn) {
       event.preventDefault();
       setIsAccount(true);
-    } 
+    } else {
+      setIsLoggedIn(true);
+    }
   };
 
   return (
@@ -82,12 +84,19 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <Login isOpen={isAccount} onClose={() => setIsAccount(false)} />
+        <Login 
+          isOpen={isAccount} 
+          onClose={() => setIsAccount(false)} 
+          onLoginSuccess={() => {
+            setIsLoggedIn(true); 
+            setIsAccount(false);
+          }} 
+        />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
           <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item">My Account</Link>
+          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
         </div>
 
         <div className="content">
