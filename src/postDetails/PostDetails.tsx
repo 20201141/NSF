@@ -61,7 +61,11 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading, username }) =
         )}
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
-
+      <form className='post-details-comment-form'>
+        <textarea></texarea>
+        <center><button type='submit'>Comment</button></center>
+        <input type=number hidden value={} />
+      </form>
       {
         comments
           .sort((commentA, commentB) => (commentA.likes - commentB.likes))
