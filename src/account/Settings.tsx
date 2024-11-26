@@ -81,11 +81,11 @@ const Settings: React.FC = () => {
       { showChangePassword ? (
         <div className="password-content">
           <p className="label">Enter current password: </p>
-          <input className="password-input" type="password" value={formData.currPassword} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="currPassword" value={formData.currPassword} onChange={handleInputChange} required />
           <p className="label">Enter new password: </p> 
-          <input className="password-input" type="password" value={formData.newPass} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="newPassword" value={formData.newPass} onChange={handleInputChange} required />
           <p className="label">Re-enter password: </p>
-          <input className="password-input" type="password" value={formData.reEnter} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={handleInputChange} required />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <div className="buttons">
             <button className="submit" onClick={handleSubmit}>Submit</button>
