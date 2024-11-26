@@ -34,3 +34,14 @@
     font-weight: bold;
     color: white;
 }
+
+.comment-reply-form-input {
+    margin-left: 6em;
+    margin-top: 1em;
+    width: 57em;
+    height: 11em;
+  }
+  
+  .comment-submit-btn {
+  
+  }
