@@ -8,7 +8,6 @@ import { Post } from '../classes/Post';
 type PostDetailsProps = {
   posts: Post[];
   loading: boolean;
-  username: string;
 };
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
