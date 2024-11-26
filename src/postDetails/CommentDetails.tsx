@@ -82,8 +82,10 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     isReplying = !isReplying;
     if(isReplying) {
       setReplyMakerInput(<form>
-        <textarea className='comment-reply-form-input' placeholder='Comment here...'></textarea>
-        <button type='submit' >Comment</button>
+        <textarea className="comment-reply-form-input" placeholder="Comment here..."></textarea>
+        <div className="comment-submit-btn">
+          <button type='submit'>Comment</button>
+        </div>
       </form>);
     }
   }
