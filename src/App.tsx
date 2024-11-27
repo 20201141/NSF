@@ -8,6 +8,7 @@ import filter from './images/filter-32.svg';
 import PageNotFound from "./PageNotFound";
 
 import Forum from "./forum/Forum";
+import Builder from "./builder/Builder";
 import PostDetails from "./postDetails/PostDetails";
 import PostForm from "./postCreation/PostForm";
 
@@ -107,7 +108,7 @@ const App: React.FC = () => {
                 <Forum posts={filteredPosts} />
               </div>} />
             <Route path="/create-post" element={<PostForm />} />
-            <Route path="/builder" element={<div>Builder Component</div>} />
+            <Route path="/builder" element={<Builder />} />
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
