@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./account/UserSettings.css";
+import "./UserSettings.css";
 
 interface LoginProps {
   isOpen: boolean;

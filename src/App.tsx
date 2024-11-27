@@ -12,7 +12,7 @@ import Builder from "./builder/Builder";
 import PostDetails from "./postDetails/PostDetails";
 import PostForm from "./postCreation/PostForm";
 
-import Login from "./Login";
+import Login from "./account/Login";
 import UserSettings from "./account/UserSettings";
 import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
