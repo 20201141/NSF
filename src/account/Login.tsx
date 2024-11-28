@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./UserSettings.css";
+import { handleInputChange } from "../FormUtils";
 
 interface LoginProps {
   isOpen: boolean;
@@ -7,15 +8,16 @@ interface LoginProps {
   onLoginSuccess: () => void;
 }
 
+interface UserFormProps {
+  username: string;
+  password: string;
+  email: string;
+}
+
 const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [formData, setFormData] = useState({username: '', password: '', email: '',});
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [formData, setFormData] = useState<UserFormProps>({username: '', password: '', email: ''});
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -69,7 +71,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
               name="username"
               placeholder="Username"
               value={formData.username}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e, setFormData)}
               required
             />
             {isSignUp && (
@@ -79,7 +81,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
                 name="email"
                 placeholder="Email"
                 value={formData.email}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange(e, setFormData)}
                 required
               />
             )}
@@ -89,7 +91,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
               name="password"
               placeholder="Password"
               value={formData.password}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e, setFormData)}
               required
             />
             <div className="login-group">
