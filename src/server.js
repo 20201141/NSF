@@ -82,7 +82,7 @@ app.post('/create-post', attachUser, async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
-      VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
+      VALUES ((SELECT username from user_account WHERE username=$1), $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
       RETURNING *`,
       [username, title, post_type, content, tags, getnotif, code || null]
     );
