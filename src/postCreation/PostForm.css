@@ -16,19 +16,11 @@
   width: 43em;
 }
 
-.create-label-notif {
+.create-post-tags-btn {
+  color: black;
   background-color: #EFEFEF;
-  border: none;
-  
-}
-
-.create-post-desc {
-  background-color: #EFEFEF;
-  display: block;
-  width: 100%;
-  height: 30%; 
-  box-sizing: border-box;
-  border: none;
+  padding: 0 1em;
+  border-radius: 0.2em;
 }
 
 .create-post-tags {
@@ -38,6 +30,15 @@
   background-color: #EFEFEF;
   color: black;
   padding: 0.6em;
+}
+
+.create-post-desc {
+  background-color: #EFEFEF;
+  display: block;
+  width: 100%;
+  height: 30%; 
+  box-sizing: border-box;
+  border: none;
 }
 
 .dont-display {
@@ -53,8 +54,17 @@
 }
 
 .create-post-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3em;
+}
+
+.create-post-submit-btn {
   background-color: #EFEFEF;
   margin-top: 0.6em;
   padding: 0.3em;
   border: none;
+  padding: .4em 2em;
+  border-radius: 0.2em;
 }
