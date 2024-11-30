@@ -15,7 +15,7 @@ interface PostFormProps {
 const PostForm: React.FC = () => {
   // deno-lint-ignore prefer-const
   let [openPopup, setPopup] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PostFormProps>({
     title: "",
     content: "",
     post_type: "",

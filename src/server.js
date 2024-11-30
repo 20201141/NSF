@@ -71,7 +71,7 @@ app.get('/posts', async (req, res) => {
 });
 
 // API Route to create a post
-app.post('/create-post', attachUser, async () => {
+app.post('/create-post', attachUser, async (req, res) => {
   const username = req.user;
   const { title, content, post_type, tags, getnotif, code } = req.body;
 
