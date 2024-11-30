@@ -54,6 +54,8 @@ const PostForm: React.FC = () => {
         credentials: "include"
       });
 
+      console.log("Form:", formData);
+
       if (response.ok) {
         const data = await response.json();
         console.log("post info: ", data);

@@ -6,7 +6,7 @@ export type Post = {
   post_type: string;
   content: string;
   isresolved: boolean;
-  code: string;
+  code: string | null;
   getnotif: boolean;
   tags: string;
 };

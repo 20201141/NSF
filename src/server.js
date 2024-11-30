@@ -58,10 +58,10 @@ app.get('/', (req, res) => {
 app.get('/posts', async (req, res) => {
   try {
     // Query to retrieve posts from the "post" table
-    const result = await pool.query(`
-      SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif, tags
-      FROM post
-    `);
+    const result = await pool.query(
+      `SELECT post_id, username, title, date, post_type, content, isresolved, code, getnotif, tags
+      FROM post`
+    );
     // Return the rows directly as an array
     res.json(result.rows);  // Make sure this returns an array directly
   } catch (err) {
@@ -82,9 +82,9 @@ app.post('/create-post', attachUser, async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
-       VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
-       RETURNING *`,
-      [username, title, post_type, content, tags.join(','), getnotif, code || null]
+      VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
+      RETURNING *`,
+      [username, title, post_type, content, tags, getnotif, code || null]
     );
 
     res.status(201).json(result.rows[0]);
