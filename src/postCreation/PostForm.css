@@ -8,25 +8,38 @@
   margin-top: 15px;
 }
 
+.first-line {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
 .create-label-title {
   background-color: #EFEFEF;
   border: none;
   padding: 0.3em;
-  margin: 1em 1em 1em 0em;
-  width: 43em;
+  /*margin: 1em 1em 1em 0em;*/
+  width: 35em;
 }
 
 .create-post-tags-btn {
+  cursor: pointer;
   color: black;
   background-color: #EFEFEF;
-  padding: 0 1em;
+  padding: 0.3em 1em;
   border-radius: 0.2em;
 }
 
 .create-post-tags {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   position: absolute;
   border: 1px solid black;
-  border-radius: 1em;
+  border-radius: 50%;
   background-color: #EFEFEF;
   color: black;
   padding: 0.6em;
