@@ -79,6 +79,8 @@ app.post('/create-post', attachUser, async (req, res) => {
     return res.status(400).json({ message: 'Title, content, and post type are required.' });
   }
 
+  console.log("username:", username);
+
   try {
     const result = await pool.query(
       `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
