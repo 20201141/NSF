@@ -82,12 +82,11 @@ app.post('/create-post', attachUser, async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
-      VALUES ((SELECT username from user_account WHERE username=$1), $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
-      RETURNING *`,
+      VALUES ((SELECT username from user_account WHERE username=$1), $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)`,
       [username.username, title, post_type, content, tags, getnotif, code || null]
     );
 
-    res.status(201).json(result.rows[0]);
+    res.redirect(303, '/');
   } catch (err) {
     console.error('Error creating post:', err);
     res.status(500).json({ message: 'Server error' });
