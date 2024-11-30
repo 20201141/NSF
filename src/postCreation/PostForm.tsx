@@ -56,9 +56,8 @@ const PostForm: React.FC = () => {
 
       console.log("Form:", formData);
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("post info: ", data);
+      if (response.redirected) {
+        window.location.assign("/");
       }
     } catch (error) {
       console.error('Error fetching post:', error);
@@ -93,7 +92,7 @@ const PostForm: React.FC = () => {
             <label><input name="tags" type="checkbox" value="swift" onChange={handleCheckbox} />Swift</label>
           </div>
         </div>
-        <textarea className="create-post-label" name="content" placeholder="Description..." onChange={(e) => handleInputChange(e, setFormData)} required />
+        <textarea className="create-post-desc" name="content" placeholder="Description..." onChange={(e) => handleInputChange(e, setFormData)} required />
         <div className="create-post-builder"><Builder /></div>
         <button className="create-post-submit" onClick={handleSubmit}>Post</button>
       </div>
