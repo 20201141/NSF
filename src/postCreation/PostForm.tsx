@@ -66,7 +66,7 @@ const PostForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="post-form">
       <h1>Create a Post</h1>
       <div className="create-post-content">
         <input className="create-label" type="text" name="title" value={formData.title} placeholder="Title" onChange={(e) => handleInputChange(e, setFormData)} required />
