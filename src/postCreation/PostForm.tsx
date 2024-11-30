@@ -1,69 +1,101 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './PostForm.css';
+import Builder from '../builder/Builder';
+import { handleInputChange } from '../FormUtils';
+
+interface PostFormProps {
+  title: string;
+  content: string;
+  post_type: string;
+  getnotif: boolean;
+  tags: string;
+  code: string;
+}
 
 const PostForm: React.FC = () => {
   // deno-lint-ignore prefer-const
   let [openPopup, setPopup] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    post_type: "",
+    getnotif: false,
+    tags: "",
+    code: "",
+  });
+
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    setFormData((prev) => {
+      let tagsArray = prev.tags.split(" ").filter(Boolean);
+      // add tags
+      if (checked) { 
+        if (!tagsArray.includes(value)) {
+          tagsArray.push(value);
+        }
+      } else {
+        // remove tag
+        tagsArray = tagsArray.filter((tag) => tag !== value);
+      }
+      return { ...prev, tags: tagsArray.join(" ") };
+    });
+  };
+
+  const handleRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, post_type: e.target.value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("/api/create-post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        credentials: "include"
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("post info: ", data);
+      }
+    } catch (error) {
+      console.error('Error fetching post:', error);
+    }
+  };
+
   return (
-    <form className="post-form">
-      <h1>Create Post</h1>
-      <div>
-        <input className='post-form-title' name='title' type='text' placeholder='Title' />
-        <input type='checkbox' name='getnotif' />
-        <span className='post-form-tags-btn' onClick={() => setPopup(!openPopup)}>Tags</span>
-        <div className={'post-form-tags'+(openPopup?'':' dont-display')}>
-          Type:&nbsp;
-          <label htmlFor='q-type'>
-            <input type='radio' id='q-type' name='post_type' value='Question' />
-            Question
-          </label>
-          <label htmlFor='d-type'>
-            <input type='radio' id='d-type' name='post_type' value='Discussion' />
-            Discussion
-          </label>
-          <br/>
-          Tags:&nbsp;
-          <label><input name='tags' type='checkbox' value='c' />C</label>
-          <label><input name='tags' type='checkbox' value='c++' />C++</label>
-          <label><input name='tags' type='checkbox' value='python' />Python</label>
-          <label><input name='tags' type='checkbox' value='java' />Java</label>
-          <label><input name='tags' type='checkbox' value='swift' />Swift</label>
+    <div>
+      <h1>Create a Post</h1>
+      <div className="create-post-content">
+        <input className="create-label" type="text" name="title" value={formData.title} placeholder="Title" onChange={(e) => handleInputChange(e, setFormData)} required />
+        <input className="create-label" type="checkbox" name="getnotif" checked={formData.getnotif} onChange={(e) => setFormData((prev) => ({ ...prev, getnotif: e.target.checked }))} />
+        <span className="create-post-tags-btn" onClick={() => setPopup(!openPopup)}>Tags</span>
+        <div className={"create-post-tags" + (openPopup ? "": " dont-display")}>
+          <div>
+            Type:&nbsp;
+            <label>
+              <input type="radio" name="post_type" value="Question" checked={formData.post_type === "Question"} onChange={handleRadio} />
+              Question
+            </label>
+            <label>
+              <input type="radio" name="post_type" value="Discussion" checked={formData.post_type === "Discussion"} onChange={handleRadio}/>
+              Discussion
+            </label>
+          </div>
+          <div>
+            Tags:&nbsp;
+            <label><input name="tags" type="checkbox" value="c" onChange={handleCheckbox} />C</label>
+            <label><input name="tags" type="checkbox" value="c++" onChange={handleCheckbox} />C++</label>
+            <label><input name="tags" type="checkbox" value="python" onChange={handleCheckbox} />Python</label>
+            <label><input name="tags" type="checkbox" value="java" onChange={handleCheckbox} />Java</label>
+            <label><input name="tags" type="checkbox" value="swift" onChange={handleCheckbox} />Swift</label>
+          </div>
         </div>
+        <textarea className="create-post-label" name="content" placeholder="Description..." onChange={(e) => handleInputChange(e, setFormData)} required />
+        <div className="create-post-builder"><Builder /></div>
+        <button className="create-post-submit" onClick={handleSubmit}>Post</button>
       </div>
-      <textarea name='content' placeholder='Description' className='post-form-content'>
-      </textarea>
-      <div className='builder-form'>
-        <div className='builder-settings'>
-          <p><label>Language:
-            <select name='builder-language'>
-              <option value='c++'>C++</option>
-              <option value='c'>C</option>
-              <option value='python'>Python</option>
-            </select>
-          </label></p>
-          <p><label>Compiler:
-            <select name='builder-language'>
-              <option value='spyder'>spyder</option>
-              <option value='g++'>g++</option>
-              <option value='gcc'>gcc</option>
-              <option hidden value='tsc'>tsc</option>
-            </select>
-          </label></p>
-          <p><label>Operating System:
-            <select name='builder-language'>
-              <option value='win11'>Windows 11</option>
-              <option value='ubuntu'>Ubuntu</option>
-            </select>
-          </label></p>
-        </div>
-        <input className='builder-input' type='file' />
-        <div className='builder-output'></div>
-      </div>
-      <div>
-      </div>
-      <center><input type='submit' value='Post' className='post-form-submit' /></center>
-    </form>
+    </div>
   );
 };
 

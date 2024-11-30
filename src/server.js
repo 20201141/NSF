@@ -70,6 +70,146 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+// API Route to create a post
+app.post('/create-post', attachUser, async () => {
+  const username = req.user;
+  const { title, content, post_type, tags, getnotif, code } = req.body;
+
+  if (!title || !username || !content || !post_type) {
+    return res.status(400).json({ message: 'Title, content, and post type are required.' });
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
+       VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)
+       RETURNING *`,
+      [username, title, post_type, content, tags.join(','), getnotif, code || null]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error creating post:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+/* Comments */
+// API Route to create a comment; returns comment type
+app.post('/comments', attachUser, async (req, res) => {
+  const username = req.user;
+  const { post_id, parent_id, content } = req.body;
+
+  console.log(req.body);
+  console.log(req.user);
+
+  if (!post_id || !content ) {
+    return res.status(400).json({ message: 'post_id and content are required'})
+  }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO comment (post_id, username, parent_id, content, date, likes)
+      VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP, 0)
+      RETURNING comment_id, post_id, username, parent_id, content, date, likes`,
+      [post_id, username, parent_id || null, content]
+    );
+
+    // make it comment type
+    const comment = result.rows[0];
+    const matchType = {
+      content: comment.content,
+      date: comment.date,
+      likes: comment.likes,
+      username: comment.username,
+      parent_id: comment.parent_id,
+    };
+    //res.status(201).json(matchType);
+    res.redirect(303, `/post/${post_id}`);
+  } catch (err) {
+    console.error('Error creating comment:', err);
+    if (err.code == '23503') {
+      return res.status(400).json({ message: 'Invalid post_id or username'});
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+//API Route to get all of the post's comments
+// API Route to get all of the post's comments
+app.get('/comments/:postId', async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT comment_id, post_id, username, parent_id, content, date, likes
+      FROM comment 
+      WHERE post_id = $1 
+      ORDER BY date ASC`,
+      [postId]
+    );
+
+    const comments = result.rows.map((row) => ({
+      content: row.content,
+      date: row.date,
+      likes: row.likes,
+      username: row.username,
+      parent_id: row.parent_id,
+    }));
+    res.status(200).json(comments);
+  } catch (err) {
+    console.error('Error getting comments:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+//API Route to update the comment's likes
+app.patch('/comments/:commentId/likes', attachUser, async (req, res) => {
+  const { commentId } = req.params;
+  const { increment } = req.body; // should be true or false
+  const username = req.user;
+  try {
+    const query = `UPDATE comment SET likes = likes + $1 WHERE comment_id = $2 RETURNING likes`;
+    const value = increment ? 1 : -1;
+    const result = await pool.query(query, [value, commentId]);
+    const checkLike = await pool.query(
+      'SELECT * FROM likes WHERE comment_id = $1 AND username = $2',
+      [commentId, username]
+    );
+    if (increment) { // adding like
+      if (checkLike.rowCount > 0) {
+        return res.status(400).json({ message: 'User already liked this comment'});
+      }
+      // insert into likes table
+      await pool.query(
+        `INSERT INTO likes (comment_id, username) VALUES ($1, $2)`,
+        [commentId, username]
+      );
+      const result = await pool.query(
+        `UPDATE comment SET likes = likes + 1 WHERE comment_id = $1 RETURNING likes`,
+        [commentId]
+      );
+      return res.status(200).json({ likes: result.rows[0].likes});
+    } else { // removing like
+      if (checkLike.rowCount > 0) {
+        return res.status(400).json({ message: 'User already liked this comment'});
+      }
+      await pool.query(
+        `DELETE FROM likes WHERE comment_id = $1 AND username = $2`,
+        [commentId, username]
+      );
+      const result = await pool.query(
+        `UPDATE comment SET likes = likes - 1 WHERE comment_id = $1 RETURNING likes`,
+        [commentId]
+      );
+      return res.status(200).json({ likes: result.rows[0].likes});
+    }
+  } catch (err) {
+    console.error('Error updating likes:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 /* User Account */
 // API Route to sign up
 app.post('/signup', async (req, res) => {
@@ -188,7 +328,7 @@ app.get('/user-info', attachUser, async (req, res) => {
 
 // API Route to change the user's password
 app.post('/change-password', attachUser, async (req, res) => {
-  const { username } = req.user;
+  const username = req.user;
   const { currPass, newPass, reEnter } = req.body;
 
   if (!currPass || !newPass || !reEnter) {
@@ -284,121 +424,6 @@ app.post('/user-theme-change', attachUser, async (req, res) => {
   } catch (err) {
     console.error("Error updating theme preference:", err);
     res.status(500).json({ message: "Server error" });
-  }
-});
-
-// API Route to create a comment; returns comment type
-app.post('/comments', attachUser, async (req, res) => {
-  const username = req.user;
-  const { post_id, parent_id, content } = req.body;
-
-  console.log(req.body);
-  console.log(req.user);
-
-  if (!post_id || !username || !content ) {
-    return res.status(400).json({ message: 'post_id, username, and content are required!'})
-  }
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO comment (post_id, username, parent_id, content, date, likes)
-      VALUES ($1, $2, $3, CURRENT_TIMESTAMP, 0)
-      RETURNING comment_id, post_id, username, parent_id, content, date, likes`,
-      [post_id, username, parent_id || null, content]
-    );
-
-    // make it comment type
-    const comment = result.rows[0];
-    const matchType = {
-      content: comment.content,
-      date: comment.date,
-      likes: comment.likes,
-      username: comment.username,
-      parent_id: comment.parent_id,
-    };
-    //res.status(201).json(matchType);
-    res.redirect(303, `/post/${post_id}`);
-  } catch (err) {
-    console.error('Error creating comment:', err);
-    if (err.code == '23503') {
-      return res.status(400).json({ message: 'Invalid post_id or username'});
-    }
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-//API Route to get all of the post's comments
-// API Route to get all of the post's comments
-app.get('/comments/:postId', async (req, res) => {
-  const { postId } = req.params;
-  try {
-    const result = await pool.query(
-      `SELECT comment_id, post_id, username, parent_id, content, date, likes
-      FROM comment 
-      WHERE post_id = $1 
-      ORDER BY date ASC`,
-      [postId]
-    );
-
-    const comments = result.rows.map((row) => ({
-      content: row.content,
-      date: row.date,
-      likes: row.likes,
-      username: row.username,
-      parent_id: row.parent_id,
-    }));
-    res.status(200).json(comments);
-  } catch (err) {
-    console.error('Error getting comments:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-//API Route to update the comment's likes
-// API Route to update the comment's likes
-app.patch('/comments/:commentId/likes', attachUser, async (req, res) => {
-  const { commentId } = req.params;
-  const { increment } = req.body; // should be true or false
-  const username = req.user;
-  try {
-    const query = `UPDATE comment SET likes = likes + $1 WHERE comment_id = $2 RETURNING likes`;
-    const value = increment ? 1 : -1;
-    const result = await pool.query(query, [value, commentId]);
-    const checkLike = await pool.query(
-      'SELECT * FROM likes WHERE comment_id = $1 AND username = $2',
-      [commentId, username]
-    );
-    if (increment) { // adding like
-      if (checkLike.rowCount > 0) {
-        return res.status(400).json({ message: 'User already liked this comment'});
-      }
-      // insert into likes table
-      await pool.query(
-        `INSERT INTO likes (comment_id, username) VALUES ($1, $2)`,
-        [commentId, username]
-      );
-      const result = await pool.query(
-        `UPDATE comment SET likes = likes + 1 WHERE comment_id = $1 RETURNING likes`,
-        [commentId]
-      );
-      return res.status(200).json({ likes: result.rows[0].likes});
-    } else { // removing like
-      if (checkLike.rowCount > 0) {
-        return res.status(400).json({ message: 'User already liked this comment'});
-      }
-      await pool.query(
-        `DELETE FROM likes WHERE comment_id = $1 AND username = $2`,
-        [commentId, username]
-      );
-      const result = await pool.query(
-        `UPDATE comment SET likes = likes - 1 WHERE comment_id = $1 RETURNING likes`,
-        [commentId]
-      );
-      return res.status(200).json({ likes: result.rows[0].likes});
-    }
-  } catch (err) {
-    console.error('Error updating likes:', err);
-    res.status(500).json({ message: 'Server error' });
   }
 });
 
