@@ -27,7 +27,7 @@ const PostForm: React.FC = () => {
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     setFormData((prev) => {
-      let tagsArray = prev.tags.split(", ").filter(Boolean);
+      let tagsArray = prev.tags.split(" ").filter(Boolean);
       // add tags
       if (checked) { 
         if (!tagsArray.includes(value)) {
@@ -37,7 +37,7 @@ const PostForm: React.FC = () => {
         // remove tag
         tagsArray = tagsArray.filter((tag) => tag !== value);
       }
-      return { ...prev, tags: tagsArray.join(" ") };
+      return { ...prev, tags: tagsArray.join(", ") };
     });
   };
 
