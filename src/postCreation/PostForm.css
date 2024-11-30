@@ -8,9 +8,18 @@
   margin-top: 15px;
 }
 
-.create-label {
+.create-label-title {
   background-color: #EFEFEF;
   border: none;
+  padding: 0.3em;
+  margin: 1em 1em 1em 0em;
+  width: 43em;
+}
+
+.create-label-notif {
+  background-color: #EFEFEF;
+  border: none;
+  
 }
 
 .create-post-desc {

@@ -54,8 +54,6 @@ const PostForm: React.FC = () => {
         credentials: "include"
       });
 
-      console.log("Form:", formData);
-
       if (response.redirected) {
         window.location.assign("/");
       }
@@ -68,8 +66,8 @@ const PostForm: React.FC = () => {
     <div className="post-form">
       <h1>Create a Post</h1>
       <div className="create-post-content">
-        <input className="create-label" type="text" name="title" value={formData.title} placeholder="Title" onChange={(e) => handleInputChange(e, setFormData)} required />
-        <input className="create-label" type="checkbox" name="getnotif" checked={formData.getnotif} onChange={(e) => setFormData((prev) => ({ ...prev, getnotif: e.target.checked }))} />
+        <input className="create-label-title" type="text" name="title" value={formData.title} placeholder="Title" onChange={(e) => handleInputChange(e, setFormData)} required />
+        <input className="create-label-notif" type="checkbox" name="getnotif" checked={formData.getnotif} onChange={(e) => setFormData((prev) => ({ ...prev, getnotif: e.target.checked }))} />
         <span className="create-post-tags-btn" onClick={() => setPopup(!openPopup)}>Tags</span>
         <div className={"create-post-tags" + (openPopup ? "": " dont-display")}>
           <div>
