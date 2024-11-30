@@ -1,6 +1,6 @@
 // function to handle inputs for text boxes
 export const handleInputChange = <T extends Record<string, any>>(
-  event: React.ChangeEvent<HTMLInputElement>,
+  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   setFormData: React.Dispatch<React.SetStateAction<T>>
 ) => {
   const { name, value } = event.target;
