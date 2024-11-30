@@ -42,7 +42,7 @@ app.use(session ({
 // Attaches user from session
 const attachUser = (req, res, next) => {
   if (req.session && req.session.user) {
-    req.user = req.session.user;
+    req.user = req.session.user.username;
     next();
   } else {
     return res.status(401).json({ message: 'Unauthorized' });
@@ -83,7 +83,7 @@ app.post('/create-post', attachUser, async (req, res) => {
     const result = await pool.query(
       `INSERT INTO post (username, title, date, post_type, content, tags, getnotif, code)
       VALUES ((SELECT username from user_account WHERE username=$1), $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7)`,
-      [username.username, title, post_type, content, tags, getnotif, code || null]
+      [username, title, post_type, content, tags, getnotif, code || null]
     );
 
     res.redirect(303, '/');
