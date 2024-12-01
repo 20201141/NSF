@@ -42,6 +42,7 @@ app.use(session ({
 // Attaches user from session
 const attachUser = (req, res, next) => {
   if (req.session && req.session.user) {
+    console.log("session:", req.session.user);
     req.user = req.session.user;
     next();
   } else {
