@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./UserSettings.css";
 import { handleInputChange } from "../FormUtils";
+import { redirect } from "react-router-dom";
 
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: () => void;
+  onLoginSuccess: (redirectLink: string) => void;
+  redirectLink: string;
 }
 
 interface UserFormProps {
@@ -14,7 +16,7 @@ interface UserFormProps {
   email: string;
 }
 
-const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
+const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess, redirectLink }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState<UserFormProps>({username: '', password: '', email: ''});
@@ -42,7 +44,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
         const data = await response.json();
         console.log(`${isSignUp ? "Sign Up" : "Log In"} successful`, data);
 
-        onLoginSuccess();
+        onLoginSuccess(redirectLink);
         onClose();
       }
 
