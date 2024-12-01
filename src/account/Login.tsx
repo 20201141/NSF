@@ -25,9 +25,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLoginSuccess }) => {
     
     try {
       const endpoint = isSignUp ? "/api/signup" : "/api/login";
-
-      console.log("Payload:", formData);
-
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
