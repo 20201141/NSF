@@ -42,7 +42,6 @@ app.use(session ({
 // Attaches user from session
 const attachUser = (req, res, next) => {
   if (req.session && req.session.user) {
-    console.log("session:", req.session.user);
     req.user = req.session.user;
     next();
   } else {
@@ -305,8 +304,6 @@ app.post('/logout', async (req, res) => {
 app.get('/user-info', attachUser, async (req, res) => {
   const username  = req.user;
 
-  console.log("username:", username);
-
   try {
     const result = await pool.query(`
       SELECT username, password, email
@@ -330,8 +327,6 @@ app.get('/user-info', attachUser, async (req, res) => {
 app.post('/change-password', attachUser, async (req, res) => {
   const username = req.user;
   const { currPass, newPass, reEnter } = req.body;
-
-  console.log("username:", username);
 
   if (!currPass || !newPass || !reEnter) {
     return res.status(400).json({ message: "Both current and new passwords are required" });
