@@ -35,7 +35,7 @@ app.use(session ({
     maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
     secure: false,  // not https
     httpOnly: true, // client-side can't access cookie
-    sameSite: 'none'
+    sameSite: 'strict'
   }
 }));
 
