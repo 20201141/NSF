@@ -330,6 +330,8 @@ app.post('/change-password', attachUser, async (req, res) => {
   const username = req.user;
   const { currPass, newPass, reEnter } = req.body;
 
+  console.log("username:", username);
+
   if (!currPass || !newPass || !reEnter) {
     return res.status(400).json({ message: "Both current and new passwords are required" });
   }
