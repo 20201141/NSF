@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import { Post } from './classes/Post'
 import './App.css';
 
@@ -28,7 +28,6 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [redirectLink, setRedirectLink] = useState<string>("/");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -66,7 +65,6 @@ const App: React.FC = () => {
       setRedirectLink(link);
       setIsAccount(true);
     } else {
-      navigate(link);
       setIsLoggedIn(true);
     }
   };
@@ -96,7 +94,7 @@ const App: React.FC = () => {
           onLoginSuccess={() => {
             setIsLoggedIn(true); 
             setIsAccount(false);
-            navigate(redirectLink);
+            window.location.href = redirectLink;
           }} 
         />
         <div className="sidebar">
