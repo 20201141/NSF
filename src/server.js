@@ -303,7 +303,9 @@ app.post('/logout', async (req, res) => {
 /* User Settings Subpage */
 // API Route to get the user's info
 app.get('/user-info', attachUser, async (req, res) => {
-  const { username } = req.user;
+  const username  = req.user;
+
+  console.log("username:", username);
 
   try {
     const result = await pool.query(`
