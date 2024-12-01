@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, useNavigate } from 'react-router-dom';
 import { Post } from './classes/Post'
 import './App.css';
 
@@ -92,9 +92,10 @@ const App: React.FC = () => {
           isOpen={isAccount} 
           onClose={() => setIsAccount(false)} 
           onLoginSuccess={() => {
+            const navigate = useNavigate();
             setIsLoggedIn(true); 
             setIsAccount(false);
-            window.location.href = redirectLink;
+            navigate(redirectLink);
           }} 
         />
         <div className="sidebar">
