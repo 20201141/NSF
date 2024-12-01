@@ -1,7 +1,7 @@
 .post-form {
   background-color: #4f87ff;
   border-radius: 10px;
-  padding: 16px;
+  padding: 16px 39px 16px 16px;
   color: white;
   width: 750px;
   margin-left: 75px;
@@ -24,7 +24,6 @@
   background-color: #EFEFEF;
   border: none;
   padding: 0.4em;
-  margin-left: 30px;
   width: 36em;
 }
 
