@@ -69,7 +69,7 @@ const PostForm: React.FC = () => {
 
   return (
     <div className="post-form">
-      <h1>Create a Post</h1>
+      <h1 className="create-post-h1">Create a Post</h1>
       <div className="create-post-content">
         <div className="first-line">
           <input className="create-label-title" type="text" name="title" value={formData.title} placeholder="Title" onChange={(e) => handleInputChange(e, setFormData)} required />
@@ -84,7 +84,7 @@ const PostForm: React.FC = () => {
           <span className="create-post-tags-btn" onClick={() => setPopup(!openPopup)}>Tags</span>
           <div className={"create-post-tags" + (openPopup ? "": " dont-display")}>
             <div>
-              Type:&nbsp;
+              Type&nbsp;
               <label>
                 <input type="radio" name="post_type" value="Question" checked={formData.post_type === "Question"} onChange={handleRadio} />
                 Question
@@ -95,7 +95,7 @@ const PostForm: React.FC = () => {
               </label>
             </div>
             <div>
-              Tags:&nbsp;
+              Tags&nbsp;
               <label><input name="tags" type="checkbox" value="c" onChange={handleCheckbox} />C</label>
               <label><input name="tags" type="checkbox" value="c++" onChange={handleCheckbox} />C++</label>
               <label><input name="tags" type="checkbox" value="python" onChange={handleCheckbox} />Python</label>
