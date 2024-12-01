@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [redirectLink, setRedirectLink] = useState<string>("/");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -69,13 +70,6 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSuccess = (redirectLink: string) => {
-    const navigate = useNavigate();
-    setIsLoggedIn(true); 
-    setIsAccount(false);
-    navigate(redirectLink);
-  }
-
   return (
     <Router>
       <div className="app-container">
@@ -98,8 +92,11 @@ const App: React.FC = () => {
         <Login 
           isOpen={isAccount} 
           onClose={() => setIsAccount(false)} 
-          onLoginSuccess={handleSuccess}
-          redirectLink={redirectLink}
+          onLoginSuccess={() => {
+            setIsLoggedIn(true); 
+            setIsAccount(false);
+            navigate(redirectLink);
+          }} 
         />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
