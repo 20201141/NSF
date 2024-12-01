@@ -27,6 +27,8 @@ const App: React.FC = () => {
   const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [redirectLink, setRedirectLink] = useState<string>("/");
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -57,9 +59,10 @@ const App: React.FC = () => {
     post.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>, link: string) => {
     if (!isLoggedIn) {
       event.preventDefault();
+      setRedirectLink(link);
       setIsAccount(true);
     } else {
       setIsLoggedIn(true);
@@ -91,13 +94,14 @@ const App: React.FC = () => {
           onLoginSuccess={() => {
             setIsLoggedIn(true); 
             setIsAccount(false);
+            window.location.href = redirectLink;
           }} 
         />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
-          <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
+          <Link to="/create-post" className="menu-item" onClick={(e) => handleProtectedLink(e, "/create-post")}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
+          <Link to="/account" className="menu-item" onClick={(e) => handleProtectedLink(e, "/account")}>My Account</Link>
         </div>
 
         <div className="content">
