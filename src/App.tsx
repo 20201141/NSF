@@ -28,7 +28,7 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [redirectLink, setRedirectLink] = useState<string>("/");
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -66,6 +66,7 @@ const App: React.FC = () => {
       setRedirectLink(link);
       setIsAccount(true);
     } else {
+      navigate(link);
       setIsLoggedIn(true);
     }
   };
