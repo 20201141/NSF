@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import { Post } from './classes/Post';
+import { Post } from './classes/Post'
 import './App.css';
 
 import logo from './images/logo.png';
@@ -8,6 +8,7 @@ import filter from './images/filter-32.svg';
 import PageNotFound from "./PageNotFound";
 
 import Forum from "./forum/Forum";
+import Builder from "./builder/Builder";
 import PostDetails from "./postDetails/PostDetails";
 import PostForm from "./postCreation/PostForm";
 
@@ -82,7 +83,9 @@ const App: React.FC = () => {
     if (!isLoggedIn) {
       event.preventDefault();
       setIsAccount(true);
-    } 
+    } else {
+      setIsLoggedIn(true);
+    }
   };
 
   return (
@@ -104,12 +107,19 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        <Login isOpen={isAccount} onClose={() => setIsAccount(false)} />
+        <Login 
+          isOpen={isAccount} 
+          onClose={() => setIsAccount(false)} 
+          onLoginSuccess={() => {
+            setIsLoggedIn(true); 
+            setIsAccount(false);
+          }} 
+        />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
           <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item">My Account</Link>
+          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
         </div>
 
         <div className="content">
@@ -120,7 +130,7 @@ const App: React.FC = () => {
                 <Forum posts={filteredPosts} />
               </div>} />
             <Route path="/create-post" element={<PostForm />} />
-            <Route path="/builder" element={<div>Builder Component</div>} />
+            <Route path="/builder" element={<Builder />} />
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />

@@ -1,0 +1,9 @@
+.terminal-output {
+    height: 100%;
+    overflow-y: auto;
+    font-family: monospace;
+    white-space: pre-wrap;
+    color: white;
+    background-color: black;
+  }
+  
