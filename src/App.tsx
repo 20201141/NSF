@@ -29,7 +29,7 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [isDark, setIsDark] = useState<boolean>(false);
-
+  
   // fetch user's preference from DB
   useEffect(() => {
     const fetchThemePreference = async () => {
@@ -134,7 +134,7 @@ const App: React.FC = () => {
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
-              <Route path="personalize" element={<Personalize isDark={isDark} setIsDark={setIsDark} />} />
+              <Route path="personalize" element={<Personalize  isDark={isDark} setIsDark={setIsDark}/>} />
             </Route>
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
             <Route path="*" element={<PageNotFound />} />
