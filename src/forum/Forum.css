@@ -7,6 +7,15 @@
     background-color: #f0f0f0; /* Background color for the content area */
 }
 
+.forum-dark {
+    position: relative;
+    max-height: 100vh; /* Adjust as needed */
+    overflow-y: auto; /* Makes the forum scrollable */
+    padding: 20px;
+    background-color: #000000; /* Background color for the content area */
+}
+
+
 .post-card {
     background-color: #4f87ff;
     border-radius: 8px;
