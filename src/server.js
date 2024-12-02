@@ -33,9 +33,9 @@ app.use(session ({
   saveUninitialized: true,
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
-    secure: false,  // not https
-    httpOnly: true, // client-side can't access cookie
-    sameSite: 'lax'
+    //secure: false,  // not https
+    //httpOnly: true, // client-side can't access cookie
+    //sameSite: 'lax'
   }
 }));
 
@@ -272,6 +272,8 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.user = user.rows[0].username;
+    
+
 
     res.status(200).json({
       message: "Login successful",
