@@ -50,11 +50,10 @@ const App: React.FC = () => {
     const fetchPosts = async () => {
       try {
         //Delete before merge
-        const API_URL = process.env.REACT_APP_API_URL || '';
-        const response = await fetch(`${API_URL}/posts`); 
+        const response = await fetch('/api/posts');
         const data = await response.json();
 
-        console.log("Fetched Posts:", data);
+        
         if (Array.isArray(data)) {
           setPosts(data);
         } else {

@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 //Delete before merge
-const PORT = 5000;
+const PORT = 3000;
 
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
