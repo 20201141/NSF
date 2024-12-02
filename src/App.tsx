@@ -121,7 +121,7 @@ const App: React.FC = () => {
           <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
         </div>
 
-        <div className="content">
+        <div className={isDark ? "content-dark" : "content"}>
           <Routes>
 
             <Route path="/" element={

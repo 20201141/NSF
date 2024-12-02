@@ -111,6 +111,13 @@
   margin-left: 25px;
 }
 
+.content-dark {
+  grid-area: content;
+  padding: 20px;
+  background-color: #000000;
+  margin-left: 25px;
+}
+
 .App-logo {
   width: 50px;
   margin-left: 50px;
