@@ -3,7 +3,8 @@ const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+//Delete before merge
+const PORT = 5000;
 
 // PostgreSQL connection setup
 const pool = new Pool({

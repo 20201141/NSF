@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./UserSettings.css";
 
-interface darkProp { 
-  isDark: boolean
-  setIsDark: React.Dispatch<React.SetStateAction<boolean>>
-}
-
 // Personalize Component
-const Personalize: React.FC<darkProp> = ({isDark,setIsDark}) => {
-  // const [isDark, setIsDark] = useState<boolean>(false);
+const Personalize: React.FC = () => {
+  const [isDark, setIsDark] = useState<boolean>(false);
 
   // fetch user's preference from DB
   useEffect(() => {

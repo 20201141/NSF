@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./UserSettings.css";
 
+
 // User Settings Component
 const Settings: React.FC = () => {
   // change password feature
@@ -9,7 +10,7 @@ const Settings: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [reenterPassword, setReenterPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  
   // changes content for password change input
   const handleClick = () => {
     setShowChangePassword(!showChangePassword);

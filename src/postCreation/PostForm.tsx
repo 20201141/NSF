@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import './PostForm.css';
+import { Post } from '../classes/Post';
 
 const PostTypeChoice: React.FC<{
   for:string, value:string // args

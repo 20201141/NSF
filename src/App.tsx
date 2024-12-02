@@ -17,6 +17,7 @@ import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
 import Personalize from './account/Personalize';
 
+
 const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,12 +27,33 @@ const App: React.FC = () => {
   const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
+
+
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/posts');
+        //Delete before merge
+        const API_URL = process.env.REACT_APP_API_URL || '';
+        const response = await fetch(`${API_URL}/posts`); 
         const data = await response.json();
 
+        console.log("Fetched Posts:", data);
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
@@ -65,7 +87,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="app-container">
+      <div className= {isDark ? "app-container-dark" : "app-container"}>
         <div className="top-nav">
           <Link to="/" className="home-icon">
             <img src={logo} className="App-logo" alt="Home" />
@@ -102,7 +124,7 @@ const App: React.FC = () => {
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
-              <Route path="personalize" element={<Personalize />} />
+              <Route path="personalize" element={<Personalize isDark={isDark} setIsDark={setIsDark} />} />
             </Route>
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
             <Route path="*" element={<PageNotFound />} />
