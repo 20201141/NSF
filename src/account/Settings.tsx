@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./UserSettings.css";
 import { UserAccount } from "../classes/UserAccount";
+import { handleInputChange } from "../FormUtils";
+
+interface UserFormProps {
+  currPass: string;
+  newPass: string; 
+  reEnter: string;
+}
 
 // User Settings Component
 const Settings: React.FC = () => {
@@ -13,13 +20,8 @@ const Settings: React.FC = () => {
     isDark: false,
   });
   const [showChangePassword, setShowChangePassword] = useState(false);
-  const [formData, setFormData] = useState({currPass: '', newPass: '', reEnter: '',});
+  const [formData, setFormData] = useState<UserFormProps>({currPass: '', newPass: '', reEnter: ''});
   const [errorMessage, setErrorMessage] = useState("");
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }
 
   // get user's info from DB
   useEffect(() => {
@@ -81,11 +83,11 @@ const Settings: React.FC = () => {
       { showChangePassword ? (
         <div className="password-content">
           <p className="label">Enter current password: </p>
-          <input className="password-input" type="password" name="currPass" value={formData.currPass} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="currPass" value={formData.currPass} onChange={(e) => handleInputChange(e, setFormData)} required />
           <p className="label">Enter new password: </p> 
-          <input className="password-input" type="password" name="newPass" value={formData.newPass} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="newPass" value={formData.newPass} onChange={(e) => handleInputChange(e, setFormData)} required />
           <p className="label">Re-enter password: </p>
-          <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={handleInputChange} required />
+          <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={(e) => handleInputChange(e, setFormData)} required />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <div className="buttons">
             <button className="submit" onClick={handleSubmit}>Submit</button>

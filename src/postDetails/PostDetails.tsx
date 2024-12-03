@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './PostDetails.css';
 import CommentDetails from './CommentDetails';
@@ -12,6 +13,29 @@ type PostDetailsProps = {
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
+  /*const [activator, activate] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  useEffect(() => {
+    async function getComments() {
+      try {
+        const resp = await fetch(`/comments/${postId}`);
+        const data = await resp.json();
+        setComments(data);
+      } catch(err) {
+        setComments([]);
+      }
+    };
+    getComments();
+  }, [activator])*/
+  const comments = (postId === "1" ? [{
+     content: "yessir",
+     date: "11/26/24",
+     likes: 1,
+     username: "python",
+     parent_id: 1,
+  }] : []);
+
 
   console.log("Loading:", loading);
   console.log("Posts:", posts);
@@ -30,11 +54,12 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const post = posts.find((p) => p.post_id === parseInt(postId || "0", 10));
   console.log("Matched Post:", post);
 
+
   if (!post) {
     return <div>Post not found</div>;
   }
 
-  const comments: Comment[] = [];
+  // activate(true); // hack
 
   return (
     <>
@@ -60,8 +85,19 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
         )}
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
-
-      {comments.map((_, ind) => <CommentDetails comments={comments} commentIndex={ind} />)}
+      <form action='/api/comments' method='POST' className='post-details-comment-form'>
+        <textarea name='content'></textarea>
+        <div className='post-content-btn'>
+          <button type='submit' className='comment-submit-btn'>Comment</button>
+        </div>
+        <input name='post_id' type='number' hidden value={post.post_id} />
+        {/*<input name='parent_id' type='string' hidden value={'null'} />*/}
+      </form>
+      {
+        comments
+          .sort((commentA, commentB) => (commentA.likes - commentB.likes))
+          .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
+      }
     </>
   );
 };

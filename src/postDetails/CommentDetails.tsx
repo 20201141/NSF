@@ -1,4 +1,5 @@
-import { Comment } from "../classes/Comment";
+import React from 'react';
+import { Comment } from '../classes/Comment';
 import { useState } from 'react';
 
 
@@ -35,7 +36,8 @@ function daysAgo(date: Date) {
 const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = ({ commentIndex, comments }) => {
   const comment = comments[commentIndex]; // Get the comment using the index
   const date: Date = new Date(comment.date);
-
+  const [likes, setLikes] = useState(comment.likes);
+  const [userLiked, setUserLiked] = useState(false);
 
   let [getReplies, setReplies] = useState(<></>);
   function onExpand() {
@@ -51,13 +53,59 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     }
   }
 
+  const toggleLike = async () => {
+    try {
+      const response = await fetch(`/comments/${commentIndex}/likes`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({increment: !userLiked}),
+      });
+      
+      const data = await response.json();
+
+      if (response.ok) {
+        setLikes(data.likes);
+        setUserLiked(!userLiked);
+      } else {
+        console.error("Failed to update likes:", data.message);
+      }
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
+
+  const [replyMakerInput, setReplyMakerInput] = useState(<></>);
+  let isReplying = false;
+  function makeReply() {
+    isReplying = !isReplying;
+    if(isReplying) {
+      setReplyMakerInput(<form>
+        <textarea className="comment-reply-form-input" placeholder="Comment here..."></textarea>
+        <div className="comment-submit-btn">
+          <button type='submit'>Comment</button>
+        </div>
+      </form>);
+    }
+  }
+
   return <>
     <div className="comment-container">
       <div className="comment">
-        <p>{comment.username} • {daysAgo(date)}</p>
+        <p className='comment-meta'>
+          <span>{comment.username} • {daysAgo(date)}</span>
+          <button className='comment-reply-button' onClick={makeReply}>Reply</button>
+        </p>
         <p>{comment.content}</p>
-        <button className="comment-replies-expand" onClick={onExpand}>replies</button>
+        <p className='comment-meta'>
+          <span className="likes-section">
+            <button onClick={toggleLike}>Like</button> ({likes} {likes !== 1 ? 'likes' : 'like'})
+          </span>
+          <button className="comment-replies-expand" onClick={onExpand}>Show Replies</button>
+        </p>
       </div>
+      {replyMakerInput}
       {getReplies}
     </div>
   </>;
