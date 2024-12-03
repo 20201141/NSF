@@ -1,7 +1,7 @@
 import React from 'react';
 import { Comment } from '../classes/Comment';
 import { useState } from 'react';
-import { makeInputChangeHandler } from '../FormUtils';
+import { handleInputChange } from '../FormUtils.ts';
 import JsonForm from '../jsonForm/JsonForm';
 import { useParams } from 'react-router-dom';
 
@@ -92,7 +92,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     if(isReplying) {
       setReplyMakerInput(<JsonForm action='/api/comments' method='POST' className='' formData={formData}>
         <textarea 
-          name="content" onChange={makeInputChangeHandler(setFormData)}
+          name="content" onChange={e => handleInputChange(e, setFormData)}
           className="comment-reply-form-input" placeholder="Comment here..."
         ></textarea>
         <div className="comment-submit-btn">
