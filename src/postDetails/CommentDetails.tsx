@@ -92,7 +92,10 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     if(isReplying) {
       setReplyMakerInput(<JsonForm action='/api/comments' method='POST' className='' formData={formData}>
         <textarea 
-          name="content" onChange={e => handleInputChange(e, setFormData)}
+          name="content" onChange={e => {
+            console.log(e.target.name, e.target.value);
+            handleInputChange(e, setFormData)
+          }}
           className="comment-reply-form-input" placeholder="Comment here..."
         ></textarea>
         <div className="comment-submit-btn">
