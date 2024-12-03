@@ -5,6 +5,8 @@ import './PostDetails.css';
 import CommentDetails from './CommentDetails';
 import { Comment } from '../classes/Comment';
 import { Post } from '../classes/Post';
+import JsonForm from '../jsonForm/JsonForm';
+import { makeInputChangeHandler } from '../FormUtils';
 
 type PostDetailsProps = {
   posts: Post[];
@@ -13,27 +15,35 @@ type PostDetailsProps = {
 
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
-  /*const [activator, activate] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([]);
 
+  const [commentFormData, setCommentFormData] = useState({
+    content: '',
+    post_id: parseInt(postId || "0", 10)
+  });
+
+  /*
+  const [comments, setComments] = useState<Comment[]>([]);
   useEffect(() => {
     async function getComments() {
       try {
         const resp = await fetch(`/comments/${postId}`);
         const data = await resp.json();
         setComments(data);
-      } catch(err) {
+      } catch(_) {
         setComments([]);
       }
     };
     getComments();
-  }, [activator])*/
+  }, [])
+  */
+
   const comments = (postId === "1" ? [{
      content: "yessir",
      date: "11/26/24",
      likes: 1,
      username: "python",
      parent_id: 1,
+     comment_id: 1
   }] : []);
 
 
@@ -60,7 +70,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   }
 
   // activate(true); // hack
-
   return (
     <>
       <div className="post-details">
@@ -85,14 +94,19 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
         )}
         {post.getnotif && <p>Notifications: Enabled</p>}
       </div>
-      <form action='/api/comments' method='POST' className='post-details-comment-form'>
-        <textarea name='content'></textarea>
+      <JsonForm
+        formData={commentFormData}
+        action='/api/comments'
+        method='POST'
+        className='post-details-comment-form'
+      >
+        <textarea name='content' onChange={makeInputChangeHandler(setCommentFormData)}></textarea>
         <div className='post-content-btn'>
           <button type='submit' className='comment-submit-btn'>Comment</button>
         </div>
         <input name='post_id' type='number' hidden value={post.post_id} />
         {/*<input name='parent_id' type='string' hidden value={'null'} />*/}
-      </form>
+      </JsonForm>
       {
         comments
           .sort((commentA, commentB) => (commentA.likes - commentB.likes))

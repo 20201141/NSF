@@ -1,6 +1,9 @@
 import React from 'react';
 import { Comment } from '../classes/Comment';
 import { useState } from 'react';
+import { makeInputChangeHandler } from '../FormUtils';
+import JsonForm from '../jsonForm/JsonForm';
+import { useParams } from 'react-router-dom';
 
 
 function daysAgo(date: Date) {
@@ -39,11 +42,11 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
   const [likes, setLikes] = useState(comment.likes);
   const [userLiked, setUserLiked] = useState(false);
 
-  let [getReplies, setReplies] = useState(<></>);
+  const [getReplies, setReplies] = useState(<></>);
   function onExpand() {
     const replies = comments
       .map((cmnt, id) => ({ cmnt, id }))
-      .filter(({cmnt}) => cmnt.parent_id === commentIndex)
+      .filter(({cmnt}) => cmnt.parent_id === comment.comment_id)
       .map(({id}) => id);
     const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} />);
     if(replies.length > 0) {
@@ -55,7 +58,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
 
   const toggleLike = async () => {
     try {
-      const response = await fetch(`/comments/${commentIndex}/likes`, {
+      const response = await fetch(`/comments/${comment.comment_id}/likes`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -76,17 +79,26 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
     }
   };
 
+  const { postId } = useParams<{ postId: string }>();
+  const [formData, setFormData] = useState({
+    content: '',
+    parent_id: comment.comment_id,
+    post_id: parseInt(postId || "0", 10)
+  });
   const [replyMakerInput, setReplyMakerInput] = useState(<></>);
   let isReplying = false;
   function makeReply() {
     isReplying = !isReplying;
     if(isReplying) {
-      setReplyMakerInput(<form>
-        <textarea className="comment-reply-form-input" placeholder="Comment here..."></textarea>
+      setReplyMakerInput(<JsonForm action='/api/comments' method='POST' className='' formData={formData}>
+        <textarea 
+          name="content" onChange={makeInputChangeHandler(setFormData)}
+          className="comment-reply-form-input" placeholder="Comment here..."
+        ></textarea>
         <div className="comment-submit-btn">
           <button type='submit'>Comment</button>
         </div>
-      </form>);
+      </JsonForm>);
     }
   }
 

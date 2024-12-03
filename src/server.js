@@ -153,6 +153,7 @@ app.get('/comments/:postId', async (req, res) => {
       date: row.date,
       likes: row.likes,
       username: row.username,
+      comment_id: row.comment_id,
       parent_id: row.parent_id,
     }));
     res.status(200).json(comments);
@@ -426,6 +427,7 @@ app.post('/user-theme-change', attachUser, async (req, res) => {
   }
 });
 
+const server = express();
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
