@@ -18,6 +18,7 @@ import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
 import Personalize from './account/Personalize';
 
+
 const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,14 +28,34 @@ const App: React.FC = () => {
   const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
   const [redirectLink, setRedirectLink] = useState<string>("/");
+
+  const [isDark, setIsDark] = useState<boolean>(false);
+  
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        console.log("isDark:", data.isDark);
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        //Delete before merge
         const response = await fetch('/api/posts');
         const data = await response.json();
 
+        
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
@@ -71,7 +92,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="app-container">
+      <div className= {isDark ? "app-container-dark" : "app-container"}>
         <div className="top-nav">
           <Link to="/" className="home-icon">
             <img src={logo} className="App-logo" alt="Home" />
@@ -104,7 +125,7 @@ const App: React.FC = () => {
           <Link to="/account" className="menu-item" onClick={(e) => handleProtectedLink(e, "/account")}>My Account</Link>
         </div>
 
-        <div className="content">
+        <div className={isDark ? "content-dark" : "content"}>
           <Routes>
 
             <Route path="/" element={
@@ -116,7 +137,7 @@ const App: React.FC = () => {
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
-              <Route path="personalize" element={<Personalize />} />
+              <Route path="personalize" element={<Personalize  isDark={isDark} setIsDark={setIsDark}/>} />
             </Route>
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
             <Route path="*" element={<PageNotFound />} />

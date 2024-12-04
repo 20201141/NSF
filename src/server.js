@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 
 const app = express();
+//Delete before merge
 const PORT = 3000;
 
 const session = require('express-session');
@@ -397,6 +398,7 @@ app.get('/user-theme', attachUser, async (req, res) => {
       [username]
     );
 
+    console.log("result:", result);
     res.status(200).json({ isDark: result });
   } catch (error) {
     console.error("Error fetching theme preference:", error);

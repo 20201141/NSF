@@ -9,6 +9,7 @@ interface UserFormProps {
   reEnter: string;
 }
 
+
 // User Settings Component
 const Settings: React.FC = () => {
   // change password feature
@@ -42,6 +43,7 @@ const Settings: React.FC = () => {
     };
     fetchUser();
   }, []);
+
 
 
   // changes content for password change input
