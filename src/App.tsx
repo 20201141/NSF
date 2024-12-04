@@ -12,7 +12,7 @@ import Builder from "./builder/Builder";
 import PostDetails from "./postDetails/PostDetails";
 import PostForm from "./postCreation/PostForm";
 
-import Login from "./Login";
+import Login from "./account/Login";
 import UserSettings from "./account/UserSettings";
 import Settings from './account/Settings';
 import MyPosts from './account/MyPosts';
@@ -27,6 +27,9 @@ const App: React.FC = () => {
   // User Account
   const [isAccount, setIsAccount] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+  const [redirectLink, setRedirectLink] = useState<string>("/");
 
   const [isDark, setIsDark] = useState<boolean>(false);
   
@@ -44,8 +47,6 @@ const App: React.FC = () => {
     };
     fetchThemePreference();
   }, []);
-
-
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -79,9 +80,10 @@ const App: React.FC = () => {
     post.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleProtectedLink = (event: React.MouseEvent<HTMLAnchorElement>, link: string) => {
     if (!isLoggedIn) {
       event.preventDefault();
+      setRedirectLink(link);
       setIsAccount(true);
     } else {
       setIsLoggedIn(true);
@@ -113,13 +115,14 @@ const App: React.FC = () => {
           onLoginSuccess={() => {
             setIsLoggedIn(true); 
             setIsAccount(false);
+            window.location.href = redirectLink;
           }} 
         />
         <div className="sidebar">
           <Link to="/" className="menu-item">Home</Link>
-          <Link to="/create-post" className="menu-item" onClick={handleProtectedLink}>Create Post</Link>
+          <Link to="/create-post" className="menu-item" onClick={(e) => handleProtectedLink(e, "/create-post")}>Create Post</Link>
           <Link to="/builder" className="menu-item">Builder</Link>
-          <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
+          <Link to="/account" className="menu-item" onClick={(e) => handleProtectedLink(e, "/account")}>My Account</Link>
         </div>
 
         <div className={isDark ? "content-dark" : "content"}>

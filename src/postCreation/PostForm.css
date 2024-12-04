@@ -1,42 +1,69 @@
 .post-form {
   background-color: #4f87ff;
   border-radius: 10px;
-  padding: 16px;
+  padding: 16px 39px 16px 16px;
   color: white;
   width: 750px;
   margin-left: 75px;
   margin-top: 15px;
 }
 
-.post-form-title {
-  background-color: #EFEFEF;
-  border: none;
+.create-post-h1 {
+  margin-left: 30px;
 }
 
-.post-form-content {
-  background-color: #EFEFEF;
-  display: block;
-  width: 100%;
-  height: 30%; /* something something rooms n' stuff */
-  box-sizing: border-box;
-  border: none;
+.first-line {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-left: 30px;
+  margin-bottom: 1em;
 }
 
-.post-form-tags {
+.create-label-title {
+  background-color: #EFEFEF;
+  border: none;
+  padding: 0.4em;
+  width: 36em;
+}
+
+.create-post-tags-btn {
+  cursor: pointer;
+  color: black;
+  background-color: #EFEFEF;
+  padding: 0.3em 1em;
+  border-radius: 0.2em;
+}
+
+.create-post-tags {
+  cursor: pointer;
   position: absolute;
   border: 1px solid black;
-  border-radius: 1em;
+  border-radius: 0.5em;
   background-color: #EFEFEF;
   color: black;
   padding: 0.6em;
+  top: 15.5em;
+  left: 50em;
+  width: 19em;
+}
+
+.create-post-desc {
+  background-color: #EFEFEF;
+  display: block;
+  margin-left: 30px;
+  margin-bottom: 2em;
+  width: 95%;
+  height: 20em; 
+  box-sizing: border-box;
+  border: none;
 }
 
 .dont-display {
   display: none;
 }
 
-.post-form-tags-btn {
-  /* display: inline-block; / * just trying to make THIS POPUP WORK ARGH */
+.create-post-btn {
   border: 1px solid black;
   padding: 0.2em;
   border-radius: 0.1em;
@@ -44,37 +71,18 @@
   color: black;
 }
 
-.post-form-type {
-  background-color: #EFEFEF;
-}
-input:checked + .post-form-type  {
-  background-color: #DEDEDE;
+.create-post-submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3em;
 }
 
-.post-form-submit {
+.create-post-submit-btn {
   background-color: #EFEFEF;
   margin-top: 0.6em;
   padding: 0.3em;
   border: none;
-}
-
-.builder-form {
-  margin: 1em;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: "set   output"
-                       "files output";
-  grid-gap: 0.3em;
-}
-.builder-settings {
-  grid-area: set;
-}
-.builder-input {
-  grid-area: files;
-}
-.builder-output {
-  grid-area: output;
-  background: black;
-  color: white;
+  padding: .4em 2em;
+  border-radius: 0.2em;
 }
