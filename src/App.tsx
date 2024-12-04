@@ -36,6 +36,7 @@ const App: React.FC = () => {
       try {
         const response = await fetch('/api/user-theme');
         const data = await response.json();
+        console.log("isDark:", data.isDark);
         setIsDark(data.isDark);
       } catch (error) {
         console.error("Error fetching theme preference:", error);
