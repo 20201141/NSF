@@ -36,9 +36,14 @@ const CommentList: React.FC<PostIdProp> = ({postId}) => {
   return <>
     {
       comments
-        .filter(comment => comment.parent_id == null)
-        .sort((commentA, commentB) => (commentA.likes - commentB.likes))
-        .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
+        .map((cmt,ind) => ({cmt,ind}))
+        .filter(({cmt}) => cmt.parent_id == null)
+        .sort((a, b) => a.cmt.likes - b.cmt.likes)
+        .map(({ind}) => <CommentDetails comments={comments} commentIndex={ind}/>)
+      // comments
+      //   .filter(comment => comment.parent_id == null)
+      //   .sort((commentA, commentB) => (commentA.likes - commentB.likes))
+      //   .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
     }
   </>;
 }
