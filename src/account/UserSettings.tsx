@@ -16,6 +16,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
       try {
         const response = await fetch('/api/user-theme');
         const data = await response.json();
+        console.log("data: ", data);
         if (data.isDark !== isDark){
           setIsDark(data.isDark);
           console.log("isdark:", data.isDark);
