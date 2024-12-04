@@ -2,9 +2,9 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 
-const app = express();
+const app = express.Router();
 //Delete before merge
-const PORT = 3000;
+const PORT = process.env.DEBUG == '1' ? 7000 : 3000;
 
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
@@ -289,9 +289,16 @@ app.post('/user-theme-change', attachUser, async (req, res) => {
   }
 });
 
-
+const server = new express();
+if(process.env.DEBUG == '1') {
+  server.use('/api', app);
+  server.use('/', express.static('build'));
+  server.get('*', (req, res) => res.sendFile(process.env.PWD+'/build/index.html'));
+} else {
+  server.use('/', app);
+}
 
 // Start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

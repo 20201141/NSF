@@ -17,7 +17,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         const response = await fetch('/api/user-theme');
         const data = await response.json();
         console.log("data: ", data);
-        if (!isLoaded){
+        if (data.isDark !== isDark){
           setIsDark(data.isDark);
           console.log("isdark:", data.isDark);
           console.log("the isdark value: ", isDark)
@@ -28,7 +28,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
       }
     };
     fetchThemePreference();
-  }, [isLoaded]);
+  }, []);
 
   const toggleDarkMode = async () => {
     const newMode = !isDark;
