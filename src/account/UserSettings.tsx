@@ -20,6 +20,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         if (data.isDark !== isDark){
           setIsDark(data.isDark);
           console.log("isdark:", data.isDark);
+          console.log("the isdark value: ", isDark)
         }
         
       } catch (error) {
