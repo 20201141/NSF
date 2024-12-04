@@ -13,6 +13,36 @@ type PostDetailsProps = {
   loading: boolean;
 };
 
+type PostIdProp = {postId: string;};
+const CommentList: React.FC<PostIdProp> = ({postId}) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  useEffect(() => {
+    async function getComments() {
+      try {
+        const resp = await fetch(`/api/comments/${postId}`);
+        if(resp.ok) {
+          const raw_data = await resp.text();
+          console.log(`fetch('/api/comments/${postId}') =>`, raw_data)
+          const data = JSON.parse(raw_data); // await resp.json();
+          console.log('data successfully parsed');
+          setComments(data);
+        }
+      } catch(_) {
+        // setComments([]);
+      }
+    };
+    getComments();
+  }, []);
+  return <>
+    {
+      comments
+        .filter(comment => comment.parent_id == null)
+        .sort((commentA, commentB) => (commentA.likes - commentB.likes))
+        .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
+    }
+  </>;
+}
+
 const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
   const { postId } = useParams<{ postId: string }>();
 
@@ -20,32 +50,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     content: '',
     post_id: parseInt(postId || "0", 10)
   });
-
-  /*
-  const [comments, setComments] = useState<Comment[]>([]);
-  useEffect(() => {
-    async function getComments() {
-      try {
-        const resp = await fetch(`/comments/${postId}`);
-        const data = await resp.json();
-        setComments(data);
-      } catch(_) {
-        setComments([]);
-      }
-    };
-    getComments();
-  }, [])
-  */
-
-  const comments = (postId === "1" ? [{
-     content: "yessir",
-     date: "11/26/24",
-     likes: 1,
-     username: "python",
-     parent_id: 1,
-     comment_id: 1
-  }] : []);
-
 
   console.log("Loading:", loading);
   console.log("Posts:", posts);
@@ -69,7 +73,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
     return <div>Post not found</div>;
   }
 
-  // activate(true); // hack
   return (
     <>
       <div className="post-details">
@@ -107,11 +110,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts, loading }) => {
         <input name='post_id' type='number' hidden value={post.post_id} />
         {/*<input name='parent_id' type='string' hidden value={'null'} />*/}
       </JsonForm>
-      {
-        comments
-          .sort((commentA, commentB) => (commentA.likes - commentB.likes))
-          .map((_, ind) => <CommentDetails comments={comments} commentIndex={ind}/>)
-      }
+      <CommentList postId={postId || "1"} />
     </>
   );
 };

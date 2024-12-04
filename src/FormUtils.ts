@@ -52,13 +52,13 @@ export const makeSubmitHandler = <T extends Record<string, any>>(
       });
 
       if (response.status === 401) {
-        const errorData = await response.json();
-        throw errorData.message;
+        const errorData = await response.text();
+        throw errorData;
       }
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(`success `, data);
+        const data = await response.text();
+        console.log(`success on fetch (${method} ${endpoint}):`, data);
         onSuccess()
       }
 

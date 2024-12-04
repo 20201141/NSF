@@ -2,8 +2,8 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 
-const app = express();
-const PORT = 3000;
+const app = express.Router();
+const PORT = process.env.DEBUG !== '1' ? 3000 : 8080;
 
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
@@ -115,16 +115,6 @@ app.post('/comments', attachUser, async (req, res) => {
       [post_id, username, parent_id || null, content]
     );
 
-    // make it comment type
-    const comment = result.rows[0];
-    const matchType = {
-      content: comment.content,
-      date: comment.date,
-      likes: comment.likes,
-      username: comment.username,
-      parent_id: comment.parent_id,
-    };
-    //res.status(201).json(matchType);
     res.redirect(303, `/post/${post_id}`);
   } catch (err) {
     console.error('Error creating comment:', err);
@@ -428,7 +418,16 @@ app.post('/user-theme-change', attachUser, async (req, res) => {
 });
 
 const server = express();
+if(process.env.DEBUG !== '1') {
+  server.use('/', app);
+} else {
+  server.use('/', express.static('build'));
+  server.use('/api', app);
+  // fallback for React Router to do it's job.
+  server.use('/*', (_,res) => res.sendFile(process.env.PWD+'/build/index.html'));
+}
+
 // Start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

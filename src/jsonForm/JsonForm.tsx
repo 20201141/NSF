@@ -8,6 +8,7 @@ type JsonFormProps <T extends Record<string, any>> = {
   action: string; 
   method: string;
   className: string;
+  onSuccess?: () => void;
 }
 
 // type JsonFormProps = <T extends Record<string, any>> React.PropsWithChildren<JsonFormArgs<T>>;
@@ -17,7 +18,7 @@ function JsonForm <T extends Record<string, any>> (props: JsonFormProps<T>) {
   const { children, action, method, className, formData } = props;
   return <form 
     className={className}
-    onSubmit={makeSubmitHandler(formData, action, method, () => null)}
+    onSubmit={makeSubmitHandler(formData, action, method, props.onSuccess || (() => null))}
   >
     {children}
   </form>;
