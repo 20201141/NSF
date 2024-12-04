@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from 'react-router-dom';
 import './UserSettings.css'; 
 
-
+const [isLoaded, setIsLoaded] = useState(false);
 interface darkProp { 
   isDark: boolean
   setIsDark: React.Dispatch<React.SetStateAction<boolean>>
@@ -17,7 +17,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         const response = await fetch('/api/user-theme');
         const data = await response.json();
         console.log("data: ", data);
-        if (data.isDark !== isDark){
+        if (!isLoaded){
           setIsDark(data.isDark);
           console.log("isdark:", data.isDark);
           console.log("the isdark value: ", isDark)
@@ -28,7 +28,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
       }
     };
     fetchThemePreference();
-  }, []);
+  }, [isLoaded]);
 
   const toggleDarkMode = async () => {
     const newMode = !isDark;
