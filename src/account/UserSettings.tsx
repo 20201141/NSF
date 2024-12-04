@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from 'react-router-dom';
 import './UserSettings.css'; 
 
-const [isLoaded, setIsLoaded] = useState(false);
+
 interface darkProp { 
   isDark: boolean
   setIsDark: React.Dispatch<React.SetStateAction<boolean>>
