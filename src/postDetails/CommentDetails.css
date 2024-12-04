@@ -1,12 +1,9 @@
-/*
-.comment-container {
-}
-*/
 .comment {
   background-color: #4f87ff;
   width: fit-content;
   max-width: 57em;
   color: white;
+  padding: 0.5em;
 }
 .comment-meta {
   display: flex;
@@ -23,8 +20,8 @@
   color: inherit;
 }
 .comment-reply-form-input {
-  border:none;
-  border-radius:0.3em;
-  background:lightgray;
-  color:black;
+  border: none;
+  border-radius: 0.3em;
+  background: lightgray;
+  color: black;
 }
