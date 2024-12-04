@@ -131,7 +131,7 @@ const App: React.FC = () => {
               </div>} />
             <Route path="/create-post" element={<PostForm />} />
             <Route path="/builder" element={<Builder />} />
-            <Route path="/account" element={<UserSettings />} >
+            <Route path="/account" element={<UserSettings isDark={isDark} setIsDark={setIsDark}/>} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
               <Route path="personalize" element={<Personalize  isDark={isDark} setIsDark={setIsDark}/>} />
