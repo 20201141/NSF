@@ -363,7 +363,7 @@ app.post('/change-password', attachUser, async (req, res) => {
 
 // API Route to get all posts from specific user
 app.get('/user-posts', attachUser, async (req, res) => {
-  const { username } = req.user;
+  const username = req.user;
 
   console.log("username:",username);
 
