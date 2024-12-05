@@ -365,8 +365,6 @@ app.post('/change-password', attachUser, async (req, res) => {
 app.get('/user-posts', attachUser, async (req, res) => {
   const username = req.user;
 
-  console.log("username:",username);
-
   try {
     const result = await pool.query(`
       SELECT post_id, title, date, post_type, isresolved, getnotif
