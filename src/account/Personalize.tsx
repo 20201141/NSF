@@ -48,7 +48,7 @@ const Personalize: React.FC<darkProp> = ({isDark,setIsDark}) => {
       <h1>Personalize</h1>
       <div className="toggle">
         <p className="toggle-label">Dark Mode</p>
-        <button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</button>
+        <button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "Off" : "On"}</button>
       </div>
     </div>
   );
