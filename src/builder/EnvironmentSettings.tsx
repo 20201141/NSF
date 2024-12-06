@@ -19,9 +19,9 @@ const EnvironmentSettings: React.FC = () => {
 
   // Menu options
   const menuOptions: Record<MenuKey, string[]> = {
-    Language: ['', 'TypeScript', 'Python', 'C++'],
-    Compiler: ['', 'tsc', 'spyder', 'clang++'],
-    'Operating System': ['', 'Windows', 'Linux', 'MacOS'],
+    Language: ['', 'Python', 'C++'],
+    Compiler: ['', 'spyder', 'clang++'],
+    'Operating System': ['', 'Linux'],
   };
 
   // Handle dropdown change

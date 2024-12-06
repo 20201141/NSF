@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './TerminalOutput.css';
 
-const TerminalOutput: React.FC = () => {
-  const [content, _] = useState<string>('Terminal Ready...\n'); // eslint-disable-line @typescript-eslint/no-unused-vars
+interface TerminalOutputProps {
+  content?: string | null;
+}
+
+const TerminalOutput: React.FC<TerminalOutputProps> = ({ content }) => {
+  const displayContent = content && content.trim() !== '' ? content : 'Terminal Ready...\n';
 
   return (
     <div className="terminal-output">
-      {content}
+      <pre>{displayContent}</pre>
     </div>
   );
 };

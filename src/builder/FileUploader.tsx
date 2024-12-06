@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './FileUploader.css';
 
-const FileUploader: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null); // Store only one file
-  const [output, setOutput] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+interface FileUploaderProps {
+  onOutputUpdate: (output: string | null, error: string | null) => void;
+}
+
+const FileUploader: React.FC<FileUploaderProps> = ({ onOutputUpdate }) => {
+  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      const selectedFile = event.target.files[0]; // Only allow one file
+      const selectedFile = event.target.files[0];
       setFile(selectedFile);
 
       const formData = new FormData();
       formData.append('file', selectedFile);
 
       try {
-        const response = await axios.post('http://localhost:5003/upload', formData, {
+        const response = await axios.post('http://128.113.126.107:5003/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
 
         // Handle response
-        setOutput(response.data.output || 'No output received');
-        setError(response.data.error || null);
+        onOutputUpdate(response.data.output || 'No output received', response.data.error || null);
 
         console.log("Success:", response.data);
 
@@ -52,9 +54,18 @@ const FileUploader: React.FC = () => {
             errorMessage = `Error: ${err.message}`;
           }
     
-          setError(errorMessage);
-          setOutput(null);
+          onOutputUpdate(null, errorMessage);
       }
+    }
+  };
+
+  // Remove the file and reset everything
+  const handleRemoveFile = () => {
+    setFile(null);
+    onOutputUpdate(null, null);
+    // Reset the file input so the same file can be uploaded again if desired
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -67,20 +78,17 @@ const FileUploader: React.FC = () => {
         <input
           type="file"
           className="file-input"
+          ref={fileInputRef}
           onChange={handleFileChange}
-          accept=".py" // Accept only Python files
+          accept=".py"
         />
       </label>
-      {output && (
-        <div className="terminal-output">
-          <h4>Output:</h4>
-          <pre>{output}</pre>
-        </div>
-      )}
-      {error && (
-        <div className="terminal-error">
-          <h4>Error:</h4>
-          <pre>{error}</pre>
+
+      {file && (
+        <div className="file-name-container">
+          <button className="remove-file-btn" onClick={handleRemoveFile}>
+            ✖
+          </button>
         </div>
       )}
     </div>
