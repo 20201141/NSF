@@ -50,7 +50,7 @@ const MyPosts: React.FC = () => {
     <div>
       <h1 style={{ color: isDark ? 'black' : 'white' }} >My Posts</h1>
       {posts.map((post) => (
-        <div key={post.post_id} className="post-card">
+        <div key={post.post_id} className= {isDark ? "post-card" : "post-card-dark"}>
           <div className="post-header">
                 <span>{new Date(post.date).toLocaleDateString()}</span>
                 <span className="post-category">{post.post_type}</span>

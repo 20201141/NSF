@@ -3,6 +3,7 @@ import "./UserSettings.css";
 import { UserAccount } from "../classes/UserAccount";
 
 
+
 // User Settings Component
 const Settings: React.FC = () => {
 
