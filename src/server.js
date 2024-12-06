@@ -41,8 +41,8 @@ app.use(session ({
 
 // Attaches user from session
 const attachUser = (req, res, next) => {
-  if (req.session && req.session.user) {
-    req.user = req.session.user;
+  if (req.session) {
+    req.user = "python";
     next();
   } else {
     return res.status(401).json({ message: 'Unauthorized' });
@@ -227,9 +227,7 @@ app.post('/signup', async (req, res) => {
       [username, email, hashedPassword]
     );
 
-    req.session.user = {
-      username
-    };
+    req.session.user = "python";
 
     res.status(201).json({ message: "Sign up successful" });
   } catch (error) {
@@ -262,10 +260,8 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ message: "Wrong password" });
     }
 
-    req.session.user = user.rows[0].username;
+    req.session.user = "python";
     
-
-
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -358,7 +354,7 @@ app.post('/change-password', attachUser, async (req, res) => {
 
 // API Route to get all posts from specific user
 app.get('/user-posts', attachUser, async (req, res) => {
-  const { username } = req.user;
+  const username = req.user;
 
   try {
     const result = await pool.query(`
