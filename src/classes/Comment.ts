@@ -4,5 +4,6 @@ export type Comment = {
   likes: number;
   username: string;
 
+  comment_id: number;
   parent_id: number | null;
 };

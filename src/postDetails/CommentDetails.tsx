@@ -1,6 +1,10 @@
 import React from 'react';
 import { Comment } from '../classes/Comment';
 import { useState } from 'react';
+import { handleInputChange } from '../FormUtils';
+import JsonForm from '../jsonForm/JsonForm';
+import { useParams } from 'react-router-dom';
+import './CommentDetails.css';
 
 
 function daysAgo(date: Date) {
@@ -33,17 +37,51 @@ function daysAgo(date: Date) {
   }
 }
 
+const ReplyForm: React.FC<{ comment_id: number }> = ({ comment_id }) => {
+  type ReplyData = {
+    content: string;
+    parent_id: number;
+    post_id: number;
+  };
+  const { postId } = useParams<{ postId: string }>();
+  var [formData, setFormData] = useState<ReplyData>({
+    content: '',
+    parent_id: comment_id,
+    post_id: parseInt(postId || "0", 10)
+  });
+  return <>
+    <JsonForm action='/api/comments' method='POST' className='' formData={formData}>
+      <textarea
+        name="content" onChange={e => {
+          console.log("before:", e.target.name, e.target.value, formData);
+          // handleInputChange<ReplyData>(e, setFormData);
+          setFormData({ 
+            content: e.target.value,
+            post_id: formData.post_id,
+            parent_id: formData.parent_id 
+          });
+          console.log("after:", e.target.name, e.target.value, formData);
+        }}
+        className="comment-reply-form-input" placeholder="Comment here..."
+      ></textarea>
+      <div className="comment-submit-btn">
+        <button type='submit'>Comment</button>
+      </div>
+    </JsonForm>
+  </>;
+};
+
 const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = ({ commentIndex, comments }) => {
   const comment = comments[commentIndex]; // Get the comment using the index
   const date: Date = new Date(comment.date);
   const [likes, setLikes] = useState(comment.likes);
   const [userLiked, setUserLiked] = useState(false);
 
-  let [getReplies, setReplies] = useState(<></>);
+  const [getReplies, setReplies] = useState(<></>);
   function onExpand() {
     const replies = comments
       .map((cmnt, id) => ({ cmnt, id }))
-      .filter(({cmnt}) => cmnt.parent_id === commentIndex)
+      .filter(({cmnt}) => cmnt.parent_id === comment.comment_id)
       .map(({id}) => id);
     const rendered_replies = replies.map((id) => <CommentDetails commentIndex={id} comments={comments} />);
     if(replies.length > 0) {
@@ -55,7 +93,7 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
 
   const toggleLike = async () => {
     try {
-      const response = await fetch(`/comments/${commentIndex}/likes`, {
+      const response = await fetch(`/api/comments/${comment.comment_id}/likes`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -81,12 +119,9 @@ const CommentDetails: React.FC<{ commentIndex: number, comments: Comment[] }> = 
   function makeReply() {
     isReplying = !isReplying;
     if(isReplying) {
-      setReplyMakerInput(<form>
-        <textarea className="comment-reply-form-input" placeholder="Comment here..."></textarea>
-        <div className="comment-submit-btn">
-          <button type='submit'>Comment</button>
-        </div>
-      </form>);
+      setReplyMakerInput(<ReplyForm comment_id={comment.comment_id} />);
+    } else {
+      setReplyMakerInput(<></>);
     }
   }
 
