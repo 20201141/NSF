@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from 'react-router-dom';
 import './UserSettings.css'; 
+import { response } from "express";
 
 
 interface darkProp { 
@@ -34,13 +35,15 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
     const newMode = !isDark;
 
     try {
-      await fetch('/api/user-theme-change', {
+      const response = await fetch('/api/user-theme-change', {
         method: "POST",
         headers: {"Content-Type": "application/json", },
         body: JSON.stringify({ isDark: newMode }),
       });
-
-      setIsDark(newMode);
+      if (response.ok) {
+        setIsDark(newMode);
+      }
+      
       console.log("isdark:", isDark);
 
       document.body.classList.toggle('dark-mode', newMode);
