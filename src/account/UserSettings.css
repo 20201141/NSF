@@ -162,12 +162,12 @@ li a.active {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.toggle-btn.on {
+.toggle-btn.off {
   background-color: #444;
   color: #fff;
 }
 
-.toggle-btn.off {
+.toggle-btn.on {
   background-color: #ddd;
   color: #000;
 }

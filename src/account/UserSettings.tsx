@@ -57,7 +57,7 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         <ul>
           <li><NavLink className={({ isActive }) => isActive ? "active nav-link" : "user-nav-item"} to="/account" end={true} >User Settings</NavLink></li>
           <li><NavLink className={({ isActive }) => isActive ? "active nav-link" : "user-nav-item"} to="/account/my-posts" >My Posts</NavLink></li>
-          <li><button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</button></li>
+          <li><button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "Dark Mode Off" : "Dark Mode On"}</button></li>
         </ul>
       </nav>
       <Outlet />
