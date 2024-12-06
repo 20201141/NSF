@@ -5,6 +5,26 @@ import { UserAccount } from "../classes/UserAccount";
 
 // User Settings Component
 const Settings: React.FC = () => {
+
+  const [isDark, setIsDark] = useState<boolean>(false);
+  
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        console.log("isDark:", data.isDark);
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
+
+
+
   // change password feature
   const [user, setUser] = useState<UserAccount>({
     user_id: 0,
@@ -80,14 +100,14 @@ const Settings: React.FC = () => {
   // display info
   return (
     <div>
-      <h1>User Settings</h1>
+      <h1 style={{ color: isDark ? 'black' : 'white' }}>User Settings</h1>
       { showChangePassword ? (
         <div className="password-content">
-          <p className="label">Enter current password: </p>
-          <input className="password-input" type="password" name="currPass" value={formData.currPass} onChange={handleInputChange} required />
-          <p className="label">Enter new password: </p> 
+          <p style={{ color: isDark ? 'black' : 'white' }} className="label">Enter current password: </p>
+          <input  className="password-input" type="password" name="currPass" value={formData.currPass} onChange={handleInputChange} required />
+          <p style={{ color: isDark ? 'black' : 'white' }} className="label">Enter new password: </p> 
           <input className="password-input" type="password" name="newPass" value={formData.newPass} onChange={handleInputChange} required />
-          <p className="label">Re-enter password: </p>
+          <p style={{ color: isDark ? 'black' : 'white' }} className="label">Re-enter password: </p>
           <input className="password-input" type="password" name="reEnter" value={formData.reEnter} onChange={handleInputChange} required />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <div className="buttons">
@@ -97,8 +117,8 @@ const Settings: React.FC = () => {
         </div>
       ) : (
         <div>
-          <p className="label">Username: {user.username}</p>
-          <p className="label">Email: {user.email}</p> 
+          <p style={{ color: isDark ? 'black' : 'white' }} className="label">Username: {user.username}</p>
+          <p style={{ color: isDark ? 'black' : 'white' }} className="label">Email: {user.email}</p> 
           <button onClick={handleClick}>Change Password</button>
         </div>
       )} 

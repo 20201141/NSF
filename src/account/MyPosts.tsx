@@ -8,6 +8,24 @@ import "./UserSettings.css";
 const MyPosts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   
+  const [isDark, setIsDark] = useState<boolean>(false);
+  
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        console.log("isDark:", data.isDark);
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
+
+
   // get user's posts from DB
   useEffect(() => {
     const fetchPosts = async () => {
@@ -30,7 +48,7 @@ const MyPosts: React.FC = () => {
   // display posts
   return (
     <div>
-      <h1>My Posts</h1>
+      <h1 style={{ color: isDark ? 'black' : 'white' }} >My Posts</h1>
       {posts.map((post) => (
         <div key={post.post_id} className="post-card">
           <div className="post-header">
