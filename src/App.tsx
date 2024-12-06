@@ -90,7 +90,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className= {isDark ? "app-container-dark" : "app-container"}>
+      <div className= {isDark ? "app-container" : "app-container-dark"}>
         <div className="top-nav">
           <Link to="/" className="home-icon">
             <img src={logo} className="App-logo" alt="Home" />
@@ -122,7 +122,7 @@ const App: React.FC = () => {
           <Link to="/account" className="menu-item" onClick={handleProtectedLink}>My Account</Link>
         </div>
 
-        <div className={isDark ? "content-dark" : "content"}>
+        <div className={isDark ? "content" : "content-dark"}>
           <Routes>
 
             <Route path="/" element={
