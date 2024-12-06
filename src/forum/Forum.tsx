@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Forum.css';
 import { Post } from '../classes/Post';
+import Personalize from '../account/Personalize';
 
 type ForumProps = {
   posts: Post[];
 };
 
 const Forum: React.FC<ForumProps> = ({ posts }) => {
+
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
+
+
+
   return (
     <div className="forum">
       {posts.map((post) => {

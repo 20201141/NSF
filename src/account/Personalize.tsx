@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./UserSettings.css";
 
+
+interface darkProp { 
+  isDark: boolean
+  setIsDark: React.Dispatch<React.SetStateAction<boolean>>
+}
+
 // Personalize Component
-const Personalize: React.FC = () => {
-  const [isDark, setIsDark] = useState<boolean>(false);
+const Personalize: React.FC<darkProp> = ({isDark,setIsDark}) => {
+  //const [isDark, setIsDark] = useState<boolean>(false);
 
   // fetch user's preference from DB
   useEffect(() => {
@@ -40,9 +46,9 @@ const Personalize: React.FC = () => {
   // display isDark
   return (
     <div className="personalize-content">
-      <h1>Personalize</h1>
+      <h1 style={{ color: isDark ? 'black' : 'white' }}>Personalize</h1>
       <div className="toggle">
-        <p className="toggle-label">Dark Mode</p>
+      <p style={{ color: isDark ? 'black' : 'white' }} className="toggle-label">Dark Mode</p>
         <button className={`toggle-btn ${isDark ? "on" : "off"}`} onClick={toggleDarkMode}>{isDark ? "On" : "Off"}</button>
       </div>
     </div>

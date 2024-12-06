@@ -11,6 +11,18 @@
   overflow: hidden;
 }
 
+.app-container-dark {
+  display: grid;
+  grid-template-areas: 
+    "top-nav top-nav"
+    "sidebar content";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr;
+  background-color: #000000;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
 /* Top Navigation Bar */
 .top-nav {
   grid-area: top-nav;
@@ -81,6 +93,13 @@
   grid-area: content;
   padding: 20px;
   background-color: #F0F0F0;
+  margin-left: 25px;
+}
+
+.content-dark {
+  grid-area: content;
+  padding: 20px;
+  background-color: #000000;
   margin-left: 25px;
 }
 

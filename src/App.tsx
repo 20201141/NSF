@@ -69,9 +69,27 @@ const App: React.FC = () => {
     }
   };
 
+
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // fetch user's preference from DB
+  useEffect(() => {
+    const fetchThemePreference = async () => {
+      try {
+        const response = await fetch('/api/user-theme');
+        const data = await response.json();
+        console.log("isDark:", data.isDark);
+        setIsDark(data.isDark);
+      } catch (error) {
+        console.error("Error fetching theme preference:", error);
+      }
+    };
+    fetchThemePreference();
+  }, []);
+
   return (
     <Router>
-      <div className="app-container">
+      <div className= {isDark ? "app-container" : "app-container-dark"}>
         <div className="top-nav">
           <Link to="/" className="home-icon">
             <img src={logo} className="App-logo" alt="Home" />
@@ -104,7 +122,7 @@ const App: React.FC = () => {
           <Link to="/account" className="menu-item">My Account</Link>
         </div>
 
-        <div className="content">
+        <div className={isDark ? "content" : "content-dark"}>
           <Routes>
 
             <Route path="/" element={
@@ -116,7 +134,7 @@ const App: React.FC = () => {
             <Route path="/account" element={<UserSettings />} >
               <Route index element={<Settings />} />
               <Route path="my-posts" element={<MyPosts />} />
-              <Route path="personalize" element={<Personalize />} />
+              <Route path="personalize" element={<Personalize isDark={isDark} setIsDark={setIsDark} />} />
             </Route>
             <Route path="/post/:postId" element={<PostDetails posts={filteredPosts} loading={loading} />} />
             <Route path="*" element={<PageNotFound />} />
