@@ -8,6 +8,16 @@
     margin-top: 15px;
 }
 
+.post-details-dark {
+    background-color: #172c58;
+    border-radius: 10px;
+    padding: 16px;
+    color: white;
+    width: 750px;
+    margin-left: 75px;
+    margin-top: 15px;
+}
+
 .tags {
     display: flex;
     gap: 8px;

@@ -26,6 +26,16 @@
     color: white;
 }
 
+.post-card-dark {
+    background-color: #172c58;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    width: 700px;
+    margin-left: 50px;
+    color: white;
+}
+
 .post-header {
     display: flex;
     justify-content: space-between;
