@@ -27,9 +27,9 @@ const Forum: React.FC<ForumProps> = ({ posts }) => {
   }, []);
 
 
-
+//{isDark ? "app-container" : "app-container-dark"}
   return (
-    <div className="forum">
+    <div className={isDark ? "forum" : "forum-dark"}>
       {posts.map((post) => {
         return (
           <div key={post.post_id} className="post-card">
