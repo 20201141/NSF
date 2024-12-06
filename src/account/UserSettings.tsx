@@ -18,11 +18,16 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         const response = await fetch('/api/user-theme');
         const data = await response.json();
         console.log("data: ", data);
-        if (data.isDark !== isDark){
+        
+
+        if (response.ok) {
           setIsDark(data.isDark);
           console.log("isdark:", data.isDark);
           console.log("the isdark value: ", isDark)
         }
+
+        
+        
         
       } catch (error) {
         console.error("Error fetching theme preference:", error);
