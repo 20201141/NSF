@@ -40,11 +40,14 @@ const UserSettings: React.FC<darkProp> = ({isDark,setIsDark}) =>{
         headers: {"Content-Type": "application/json", },
         body: JSON.stringify({ isDark: newMode }),
       });
+
+      console.log("Response", response);
+
       if (response.ok) {
         setIsDark(newMode);
       }
       
-      console.log("isdark:", isDark);
+      
 
       document.body.classList.toggle('dark-mode', newMode);
     } catch (error) {
